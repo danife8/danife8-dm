@@ -1,4 +1,8 @@
 # README
+## Último feature implementado
+Toda la seccion Campaigns, Documents y DocumentsRequest fueron desarrolladas por mi parte. Así como el controlador stimulus Drag-and-Drop de archivos.
+El flujo completo se compone desde la creación de Campaigns en un callback de InsertionOrder, hasta la carga de archivos Documents a un bucket en S3 utilizando direct_upload.
+
 ## Algunas seciones donde tuve participacion
 * /app/assets/modules/drag-and-drop.scss
 * /app/controllers/campaigns_controller.rb
