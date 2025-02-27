@@ -1,0 +1,5 @@
+<h3 class="mb-2 text-center">SUMMARY: <%= resource.title %></h3>
+
+<% (1..7).each do |step| %>
+  <%= render "media_brief_builders/step_8_sections/step", field_separation: 2, step: step, hidden_edit: true %>
+<% end %>

@@ -1,0 +1,4 @@
+<section class="d-flex flex-column h-100">
+  <%= render "shared/page_heading", title: "Upload Documents | Campaign - #{@campaign.insertion_order.title}", class_name: "mb-5" %>
+  <%= render "documents/drag_and_drop", campaign_id: @campaign.id %>
+</section>

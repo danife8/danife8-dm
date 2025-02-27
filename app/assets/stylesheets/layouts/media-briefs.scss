@@ -1,0 +1,18 @@
+.l-media-briefs {
+  .icon-robot {
+    bottom: 0;
+    left: 48px;
+    width: 158px;
+  }
+
+  .icon-4-in-1 {
+    bottom: 50px;
+    right: -100px;
+    width: 568px;
+    transform: rotate(-45deg);
+  }
+
+  .table-container {
+    margin-bottom: 170px; // Ensure that the table does not overlap the robot icon.
+  }
+}

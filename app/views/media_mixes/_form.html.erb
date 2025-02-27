@@ -1,0 +1,64 @@
+<div data-controller="dependent-dropdowns">
+  <%= form_for(resource) do |form| %>
+
+    <%= render "shared/form_errors", resource: %>
+
+    <div data-controller="auto-fill-title">
+      <div class="mb-3">
+        <%= form.label :client_id, class: "form-label" %>
+        <%= form.select :client_id,
+                        options_for_select(
+                          clients.map{|client| [client.name, client.id] },
+                          client&.id || resource.client_id
+                        ),
+                        { include_blank: true },
+                        class: "form-select",
+                        required: true,
+                        data: {
+                          "dependent-dropdowns-target": "source",
+                          "auto-fill-title-target": "select",
+                          action: "change->dependent-dropdowns#onChangeSource",
+                          option_label_attr: "title",
+                          options_url: media_briefs_path(filter: {client_id: "placeholder_id" }, per: 250),
+                          options_key: "media_briefs"
+                        }
+        %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :title, class: "form-label" %>
+        <%= form.text_field :title, autofocus: true, class: "form-control", value: resource.title.present? ? resource.title : generate_media_title(MediaMix, current_user) %>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :media_brief_id, class: "form-label" %>
+      <%= form.select :media_brief_id,
+                      options_for_select(
+                        MediaBrief.by_client_id(client&.id || resource.client_id).pluck(:title, :id),
+                        media_brief&.id || resource.media_brief_id
+                      ),
+                      { include_blank: true },
+                      class: "form-select",
+                      required: true,
+                      data: { "dependent-dropdowns-target": "target" }
+      %>
+    </div>
+
+    <% if edit_view %>
+      <div class="mb-3">
+        <%= form.label :aasm_state, "Status", class: "form-label" %>
+        <%= text_field_tag :aasm_state, media_mix_status(resource.aasm_state), class: "form-control", readonly: true %>
+      </div>
+    <% end %>
+
+    <div class="row d-flex justify-content-end">
+      <div class="col col-2">
+        <%= link_to "Cancel", media_mixes_path, class: "btn btn-light w-100" %>
+      </div>
+      <div class="col col-2">
+        <%= form.submit edit_view ? "Save" : "Generate", class: "btn btn-primary w-100" %>
+      </div>
+    </div>
+  <% end %>
+</div>

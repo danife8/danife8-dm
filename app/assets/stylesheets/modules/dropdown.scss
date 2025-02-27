@@ -1,0 +1,6 @@
+// Override bootstrap dropdown styles
+.dropdown {
+  &-toggle::after {
+    vertical-align: middle;
+  }
+}

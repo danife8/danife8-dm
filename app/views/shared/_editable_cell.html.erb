@@ -1,0 +1,19 @@
+<td
+  data-controller="editable-cell"
+  data-action="click->editable-cell#toggleField"
+  data-editable-cell-original-value="<%= local_assigns[:value_content] || local_assigns[:text_content] %>"
+  data-editable-cell-modified-value="false"
+  data-editable-cell-modified-class="modified"
+  data-editable-row-target="cell"
+  class="editable-cell"
+>
+  <span
+    data-editable-cell-target="text"
+    class="text form-control text-color-secondary"
+  >
+    <%= local_assigns[:text_content] %>
+  </span>
+  <div class="input-wrapper">
+    <%= yield({"editable-cell-target": "input", "action": "blur->editable-cell#hideField"}) %>
+  </div>
+</td>

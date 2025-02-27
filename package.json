@@ -1,0 +1,42 @@
+{
+  "name": "digital-mouth-storm-center",
+  "private": "true",
+  "engines": {
+    "node": "^22.11",
+    "yarn": "^1.22.19"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/stimulus-webpack-helpers": "^1.0.1",
+    "@hotwired/turbo-rails": "^8.0.12",
+    "@popperjs/core": "^2.11.6",
+    "@rails/activestorage": "^7.2.201",
+    "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.3",
+    "html5sortable": "^0.14.0",
+    "imask": "^7.4.0",
+    "sass": "^1.83.1",
+    "swiper": "^11.2.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^5.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "prettier": "^3.4.2"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "app/**/*.js": [
+      "eslint --fix"
+    ],
+    "**/*.{css,scss,js,json}": "prettier --write"
+  }
+}

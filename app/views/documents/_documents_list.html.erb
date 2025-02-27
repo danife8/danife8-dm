@@ -1,0 +1,44 @@
+<table class="table table-striped">
+  <thead>
+    <th scope="col">Document/File Name</th>
+    <% if params[:files_for].nil? %>
+      <th scope="col">Type</th>
+    <% end %>
+    <th scope="col">Date Created</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% if collection.any? %>
+      <% collection.each do |campaign_resource| %>
+        <tr data-id="<%= campaign_resource.id %>">
+          <td><%= campaign_resource.title %></td>
+          <% if params[:files_for].nil? %>
+            <td><%= campaign_resource.class.name.titleize %></td>
+          <% end %>
+          <td><%= l campaign_resource.created_at, format: :only_date %></td>
+          <td class="text-center">
+            <% if campaign_resource.is_a?(Document) %>
+              <%= link_to rails_blob_path(campaign_resource.file, disposition: 'attachment'), class: "btn btn-primary" do %>
+                <i class="bi bi-download"></i>
+              <% end %>
+              <% destroy_redirection_path = edit_documents_request_path(resource, files_for: params[:files_for]) if params[:files_for].presence %>
+              <%= link_to campaign_document_path(resource.id, campaign_resource.id, destroy_redirection_path: destroy_redirection_path),
+                class: "btn btn-danger",
+                data: {turbo_method: :delete, turbo_confirm: "You are about to delete this file. Are you sure?"} do %>
+                <i class="bi bi-trash3"></i>
+              <% end %>
+            <% else %>
+              <%= link_to "View", polymorphic_path(campaign_resource), class: "btn btn-primary" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="4" class="text-center">No documents uploaded.</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate collection %>

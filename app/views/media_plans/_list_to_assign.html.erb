@@ -1,0 +1,38 @@
+<table id="clients" class="table table-striped">
+  <thead>
+    <th scope="col">Title</th>
+    <th scope="col">Client</th>
+    <th scope="col">Media Brief</th>
+    <th scope="col">Media Mix</th>
+    <th scope="col">Created Date</th>
+    <th scope="col">Status</th>
+    <th scope="col">Assigment</th>
+  </thead>
+  <tbody>
+    <% collection.each do |media_plan| %>
+      <tr data-id="<%= media_plan.id %>">
+        <td><%= media_plan.title %></td>
+        <td><%= media_plan.client.name %></td>
+        <td><%= media_plan.media_brief.title %></td>
+        <td><%= media_plan.media_mix.title %></td>
+        <td><%= l media_plan.created_at, format: :only_date %></td>
+        <td><%= media_plan_modified_status(media_plan) %><%= media_plan_status(media_plan.aasm_state, media_plan.deleted?) %></td>
+        <td>
+          <% if media_plan.reviewer_id.blank? %>
+            <%= form_for media_plan, url: reviewer_assign_media_plan_path(media_plan), method: :put, html: { name: "reviewer_form_#{media_plan.id}" } do |form| %>
+              <%= form.select :reviewer_id, reviewer_options, {include_blank: true}, { onchange: "reviewer_form_#{media_plan.id}.submit()", class: 'form-control' } %>
+            <% end %>
+          <% else %>
+            <%= render 'assign_modal', media_plan: %>
+            <div><strong>Review Expert:</strong> <%= media_plan.reviewer.full_name %></div>
+            <a href="#" class="dropdown-item text-decoration-underline" data-bs-toggle="modal" data-bs-target="#assignModal<%= media_plan.id %>">
+              Reassign
+            </a>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate collection %>

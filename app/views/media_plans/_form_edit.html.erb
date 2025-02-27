@@ -1,0 +1,12 @@
+<%= render "shared/form_errors", resource: media_plan.media_plan_output.errors.any? ? media_plan.media_plan_output : media_plan %>
+
+<% form_id = "update_media_plan" %>
+<%= form_with(model: media_plan, url: media_plan_path(media_plan), method: :put, id: form_id, data: { controller: "media-plan-update-state" }) do |form| %>
+  <%= form.hidden_field :action, data: { "media-plan-update-state-target": "action" } %>
+
+  <% if current_user.reviewer? %>
+    <%= render "reviewer_editable_table", form_id:, media_plan: %>
+  <% else %>
+    <%= render "user_editable_table", form_id:, media_plan: %>
+  <% end %>
+<% end %>

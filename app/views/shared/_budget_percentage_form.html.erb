@@ -1,0 +1,167 @@
+<%= form_with(model: resource, url:, method: :patch, class: "row") do |form| %>
+  <p class="h3 mb-3"> Primary Channel 1</p>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel1, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel1, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel1_target_strategy1, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel1_target_strategy1, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel1_target_strategy2, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel1_target_strategy2, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel1_target_strategy3, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel1_target_strategy3, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel1_target_strategy4, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel1_target_strategy4, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel1_target_strategy5, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel1_target_strategy5, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-4">
+      <%= form.label :primary_channel1_include_retargeting, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.select :primary_channel1_include_retargeting, [['Yes', true], ['No', false]], {}, class: 'form-control' %>
+    </div>
+  </div>
+
+  <p class="h3 mb-3"> Primary Channel 2</p>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel2, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel2, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel2_target_strategy1, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel2_target_strategy1, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel2_target_strategy2, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel2_target_strategy2, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel2_target_strategy3, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel2_target_strategy3, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel2_target_strategy4, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel2_target_strategy4, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel2_target_strategy5, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :primary_channel2_target_strategy5, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :primary_channel2_include_retargeting, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.select :primary_channel2_include_retargeting, [['Yes', true], ['No', false]], {}, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :secondary_channel1, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :secondary_channel1, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :secondary_channel2, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :secondary_channel2, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-4">
+      <%= form.label :secondary_channel3, class: 'form-label' %>
+    </div>
+    <div class="col-2">
+      <%= form.number_field :secondary_channel3, class: 'form-control', required: true, min: 0, max: 100 %>
+    </div>
+  </div>
+
+  <div class="row d-flex justify-content-end">
+    <div class="col col-2">
+      <%= link_to "Cancel", admin_console_path, class: "btn btn-light w-100" %>
+    </div>
+    <div class="col col-2">
+      <%= form.submit "Save", class: 'btn btn-primary w-100' %>
+    </div>
+  </div>
+<% end %>

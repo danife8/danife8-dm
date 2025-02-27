@@ -1,0 +1,53 @@
+<div class="mb-3">
+  <%= form.label :industry_target, "Is this a B2B or B2C campaign?", class: 'form-label' %>
+  <%= form.select(:industry_target, enum_model_select_options(IndustryTarget), { include_blank: true }, { class: 'form-select' }) %>
+</div>
+
+<div class="mb-3">
+  Provide up to 5 descriptions of the industry category.
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :industry_description1, '1', class: "form-label" %>
+  </div>
+  <div class="col">
+    <%= form.text_field :industry_description1, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :industry_description2, '2', class: "form-label" %>
+  </div>
+  <div class="col">
+    <%= form.text_field :industry_description2, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :industry_description3, '3', class: "form-label" %>
+  </div>
+  <div class="col">
+    <%= form.text_field :industry_description3, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :industry_description4, '4', class: "form-label" %>
+  </div>
+  <div class="col">
+    <%= form.text_field :industry_description4, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :industry_description5, '5', class: "form-label" %>
+  </div>
+  <div class="col">
+    <%= form.text_field :industry_description5, class: 'form-control' %>
+  </div>
+</div>

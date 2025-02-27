@@ -1,0 +1,136 @@
+<table class="table table-bordered text-center table-sm">
+  <tbody>
+    <tr>
+      <td colspan="8" class="text-center col"><strong><%= title %></strong></td>
+    </tr>
+    <tr>
+      <td class="col" colspan="2"><%= media_output.campaign_initiative.label %></td>
+      <td class="col"><strong>Budget</strong></td>
+      <td class="col"><%= number_to_currency(media_output.budget) %></td>
+      <td class="col"><strong>Flight Days</strong></td>
+      <td class="col"><%= number_with_precision(media_output.flight_days, precision: 2) %></td>
+      <td class="col">&nbsp;</td>
+      <td class="col">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Primary channels -->
+    <% engine.primary_channels.each_with_index do |channel, index| %>
+      <tr>
+        <td><strong><%= channel.title %></strong></td>
+        <td><strong>Target Strategy</strong></td>
+        <% if index.zero? %>
+          <td>Platform Budget</td>
+          <td>Amt</td>
+          <td>Target Strategy Budget</td>
+          <td>Amt</td>
+          <td class="table-primary">Amt PD</td>
+          <td>Meets Minimum?</td>
+        <% else %>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td class="table-primary">&nbsp;</td>
+          <td>&nbsp;</td>
+        <% end %>
+      </tr>
+
+      <% channel.target_strategies.each_with_index do |strategy, index_strategy| %>
+        <tr>
+          <td><%= channel.campaign_channel.label %></td>
+          <td><%= strategy.target_strategy.label %></td>
+
+          <% if index_strategy.zero? %>
+            <td rowspan="<%= channel.target_strategies.size %>" class="align-middle">
+              <%= budget_percentage(channel.platform_budget) %>
+            </td>
+            <td rowspan="<%= channel.target_strategies.size %>" class="align-middle">
+              <%= currency(channel.platform_amt) %>
+            </td>
+          <% end %>
+
+          <td><%= budget_percentage(strategy.budget) %></td>
+          <td><%= currency(strategy.amt) %></td>
+          <td class="table-primary"><%= currency(strategy.amt_pd) %></td>
+          <td><%= strategy.meets_min.to_s.upcase %></td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="6" class="table-secondary">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+
+    <% if engine.secondary_channels.any? %>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+
+      <!-- Secondary channels -->
+      <% engine.secondary_channels.each_with_index do |channel, index| %>
+        <% target_strategy = channel.target_strategies.first %>
+        <% if target_strategy.present? %>
+          <tr>
+            <td class="table-secondary"><%= channel.campaign_channel.label %></td>
+            <td class="table-secondary"><%= target_strategy.target_strategy.label %></td>
+            <td class="table-secondary"><%= budget_percentage(channel.platform_budget) %></td>
+            <td class="table-secondary" colspan="2"></td>
+            <td class="table-secondary"><%= currency(target_strategy.amt) %></td>
+            <td class="table-secondary"><%= currency(target_strategy.amt_pd) %></td>
+            <td><%= target_strategy.meets_min.to_s.upcase %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td class="border border-dark border-bottom-0 border-start-0 border-end-0"><%= sum_percentages(engine) %></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td class="border border-dark border-bottom-0 border-start-0 border-end-0"><%= sum_amts(engine) %></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>🌩️ Storm Center 🌩️</title>
+    <%= viewport_meta_tag %>
+    <!-- @see: https://turbo.hotwired.dev/handbook/drive#prefetching-links-on-hover -->
+    <meta name="turbo-prefetch" content="false">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+  <body class="<%= body_class %>">
+    <% if is_mobile? %>
+      <div
+        class="bg-dark-blue justify-content-center align-items-center position-fixed top-0 start-0 w-100 h-100 text-center fw-bold fs-3 z-3 p-4 font-secondary landscape-warning"
+      >
+        Please rotate your device to landscape mode to view the content.
+      </div>
+    <% end %>
+    <div class="container-fluid content" data-controller="alert">
+      <%= render "layouts/flash" %>
+      <div class="row vh-100">
+        <div class="col-3 p-0 position-relative bg-gradient">
+          <%= render "layouts/sidebar" %>
+        </div>
+        <main class="col-9 p-5 pb-4 position-relative l-content">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

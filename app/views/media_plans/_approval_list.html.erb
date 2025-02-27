@@ -1,0 +1,41 @@
+<table id="clients" class="table table-striped">
+  <thead>
+    <th scope="col">Title</th>
+    <th scope="col">Client</th>
+    <th scope="col">Media Brief</th>
+    <th scope="col">Media Mix</th>
+    <th scope="col">Created Date</th>
+    <th scope="col">Review Expert Status</th>
+    <th scope="col">Creator's Status</th>
+    <th scope="col">Options</th>
+  </thead>
+  <tbody>
+    <% collection.with_deleted.each do |media_plan| %>
+      <tr data-id="<%= media_plan.id %>">
+        <td><%= media_plan.title %></td>
+        <td><%= media_plan.client.name %></td>
+        <td><%= media_plan.media_brief.title %></td>
+        <td><%= media_plan.media_mix.title %></td>
+        <td><%= l media_plan.created_at, format: :only_date %></td>
+        <td><%= media_plan_modified_status(media_plan) %><%= media_plan_status(media_plan.aasm_state, media_plan.deleted?) %></td>
+        <td><%= media_plan_creator_status(media_plan.aasm_creator_state, media_plan.deleted?) %></td>
+        <td class="links-column">
+          <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle <%= "disabled" if media_plan.deleted? %>" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><%= link_to "Download PPT", export_media_plan_path(media_plan), class: "dropdown-item #{'disabled' unless policy(media_plan).export?}", data: { turbolinks: false }, onclick: "this.onclick = function(e) { e.preventDefault(); };" %></li>
+              <li><%= link_to "Show", media_plan_path(media_plan), class: "dropdown-item" %></li>
+              <li><%= link_to "Review", edit_media_plan_path(media_plan), class: "dropdown-item #{'disabled' unless policy(media_plan).edit?}" %></li>
+              <li><%= link_to "History and Details", versions_media_plan_path(media_plan), class: "dropdown-item #{'disabled' unless policy(media_plan).versions?}" %></li>
+              <li><%= link_to "Archive", media_plan_path(media_plan), method: :delete, data: {
+                turbo_confirm: "Are you sure you want to archive the Media Plan?", turbo_method: :delete
+              }, class: "dropdown-item #{policy(media_plan).destroy? ? 'text-danger' : 'disabled'}" %></li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate collection %>

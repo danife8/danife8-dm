@@ -1,0 +1,52 @@
+<% controller_id = "media-brief-form-step-#{step}" %>
+<% prevent_update_controller = defined?(prevent_update) ? " media-brief-update" : "" %>
+<% prevent_update_action = defined?(prevent_update) ? " submit->media-brief-update#submit" : "" %>
+<div data-controller="<%= controller_id %>" class="media-briefs">
+  <% unless step == 8 || params[:back_to_step].present? %>
+    <%= render "media_brief_builders/progress_bar", step: step, max_steps: 8, title: step_title(resource) %>
+  <% end %>
+
+  <%= form_for(resource, data: {
+    controller: prevent_update_controller,
+    action: "#{controller_id}#submit #{prevent_update_action}",
+    "#{controller_id}-target": "form",
+    "object-name": resource.model_name.param_key
+  }) do |form| %>
+    <% if resource.errors.any? %>
+      <div class="pb-3">
+        <p class="h2 text-danger"><%= pluralize(resource.errors.count, "error") %> prohibited this resource from being saved:</p>
+
+        <ul class="list-group">
+          <% resource.errors.each do |error| %>
+            <li class="list-group-item list-group-item-danger"><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if  params[:step].present? %>
+      <%= hidden_field_tag :step, params[:step] %>
+    <% end %>
+
+    <% if  params[:back_to_step].present? %>
+      <%= hidden_field_tag :back_to_step, params[:back_to_step] %>
+    <% end %>
+
+    <%= form.hidden_field :current_step, value: next_media_brief_wizard_step(resource) %>
+
+    <%= render "media_brief_builders/form_step_#{step}", resource:, form: %>
+
+    <% if resource.is_a?(MediaBriefBuilder) || editing?(params[:step]) %>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <%= link_to content_for?(:back_url) ? yield(:back_url) : [:edit, resource, step: params[:step].to_i - 1, completed: params[:completed]], class: "btn btn-light me-md-2" do %>
+          Back
+        <% end %>
+        <% if resource.is_a?(MediaBrief) %>
+          <button class="btn btn-primary">Update</button>
+        <% else %>
+          <button class="btn btn-primary"> <%= next_media_brief_wizard_step(resource) == 9 ? "Save" : "Next" %> </button>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

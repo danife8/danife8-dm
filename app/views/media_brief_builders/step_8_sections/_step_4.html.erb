@@ -1,0 +1,58 @@
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>All ages and genders:</strong>
+  </div>
+  <div>
+    <%= boolean_to_text resource.all_demographics %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Targeted Gender(s):</strong>
+  </div>
+  <div>
+    <% if resource.all_demographics %>
+      <span>ALL</span>
+    <% else %>
+      <ul>
+        <% resource.demographic_genders_list.each do |gender| %>
+          <li><%= gender.label %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Age(s):</strong>
+  </div>
+  <div>
+    <% if resource.all_demographics %>
+      <span>ALL</span>
+    <% else %>
+      <ul>
+        <% resource.demographic_ages_list.each do |age| %>
+          <li><%= age %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Additional Demographic Details:</strong>
+  </div>
+  <div>
+    <ol>
+      <% (1..5).each do |i| %>
+        <% prefix = resource.send("demographic_details#{i}_prefix") %>
+        <li>
+          <% if prefix.present? %>
+            <%= DemographicDetailsPrefix.find(prefix).try(:label) %>:&nbsp;
+          <% end %>
+          <%= resource.send("demographic_details#{i}") %>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+</div>

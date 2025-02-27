@@ -1,0 +1,13 @@
+<div class="container">
+  <%= render "media_brief_builders/form", step: current_media_brief_wizard_step(resource), resource: resource, prevent_update: true %>
+
+  <% unless media_plans_present?(resource) || editing?(params[:step]) %>
+    <div class="d-flex justify-content-end mt-3">
+      <%= link_to "Generate Media Plan", new_media_plan_path(media_mix_id: resource.newest_media_mix&.id, media_brief_id: resource.id), class: "btn btn-light me-md-2" %>
+    </div>
+  <% end %>
+
+  <% unless editing?(params[:step]) %>
+    <%= render "histories" %>
+  <% end %>
+</div>

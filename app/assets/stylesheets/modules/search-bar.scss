@@ -1,0 +1,17 @@
+$search-bar-border-radius: 6px;
+
+.search-bar {
+  &-input {
+    border-radius: $search-bar-border-radius 0 0 $search-bar-border-radius;
+    border-color: white;
+
+    &:focus {
+      box-shadow: none;
+      border-color: white;
+    }
+  }
+
+  &-button {
+    border-radius: 0 $search-bar-border-radius $search-bar-border-radius 0;
+  }
+}

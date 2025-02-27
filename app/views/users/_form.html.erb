@@ -1,0 +1,114 @@
+<div
+  data-controller="dependent-dropdowns user-toggle-client-id"
+  data-target-user-role-id="<%= client_user_role_id %>"
+>
+<%= form_with(model: user) do |form| %>
+  <%= render "shared/form_errors", resource: user %>
+
+  <% if current_user.super_admin? %>
+    <div class="mb-3">
+      <%= form.label :agency, class: "form-label" %>
+      <%= form.select(
+        :agency_id,
+        Agency.all.order(:name).map { |a| [a.name, a.id] },
+        _options = {},
+        _html_options = {
+          class: "form-select",
+          aria: {label: "Agency"},
+          data: {
+            "dependent-dropdowns-target": "source",
+            action: "change->dependent-dropdowns#onChangeSource",
+            # We are replacing placeholder_id with the actual id
+            options_url: clients_path(filter: {agency_id: "placeholder_id" }, per: 250),
+            options_key: "clients" # Used to access the option list because it comes in a nested object
+          }
+        }
+      ) %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :first_name, class: "form-label" %>
+    <%= form.text_field :first_name, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :last_name, class: "form-label" %>
+    <%= form.text_field :last_name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :email, class: "form-label" %>
+    <%= form.text_field :email, class: "form-control", placeholder: "example@domain.com", required: true,
+      pattern: "^([a-zA-Z0-9_\\-\\+\\.]+)@([a-zA-Z0-9\\-\\.]{3,})\\.([a-zA-Z]{2,})(\.[a-zA-Z]{2,})?$", title: "Please follow the example formatting: example@domain.com" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :phone_number, class: "form-label" %>
+    <%= form.telephone_field :phone_number, class: "form-control", maxlength: 10, pattern: "[0-9]{10}", title: "Enter a 10-digit Phone Number" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :user_role, "Role", class: "form-label" %>
+    <%= form.select(
+      :user_role_id,
+      user_role_options,
+      _options = {},
+      _html_options = {
+        class: "form-select",
+        aria: {label: "User role"},
+        data: {
+          action: "change->user-toggle-client-id#toggleClientContainer"
+        }
+      }
+    ) %>
+  </div>
+
+  <div
+    class="mb-3 <%= client_container_class(form.object.user_role_id) %>"
+    data-user-toggle-client-id-target="clientContainer"
+  >
+    <%= form.label :client, class: "form-label" %>
+    <%= form.select(
+      :client_id,
+      client_options_by_agency(form.object.agency_id),
+      _options = {
+        include_blank: true
+      },
+      _html_options = {
+        class: "form-select",
+        aria: {label: "Client"},
+        data: {
+          "dependent-dropdowns-target": "target",
+        }
+      }
+    ) %>
+  </div>
+
+  <% if user.persisted? %>
+    <div class="mb-3">
+      <%= form.label :aasm_state, "Status", class: "form-label" %>
+      <%= form.select(
+        :aasm_state,
+        User.valid_aasm_states.map { |s| [s.titleize, s] },
+        _options = {},
+        _html_options = {
+          class: "form-select",
+          aria: {label: "User status"}
+        }
+      ) %>
+    </div>
+  <% end %>
+
+  <% if current_user.super_admin? %>
+    <div class="form-check mb-3">
+      <%= form.check_box :super_admin, class: "form-check-input" %>
+      <%= form.label :super_admin, class: "form-check-label" %>
+    </div>
+  <% end %>
+
+  <div class="mt-5 d-flex justify-content-center">
+    <%= form.submit (user.new_record? ? "Save" : "Update"), class: "btn btn-primary ps-5 pe-5" %>
+  </div>
+<% end %>
+</div>

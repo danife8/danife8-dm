@@ -1,0 +1,12 @@
+$pagination-item-size: 2rem;
+
+.pagination {
+  .page-link {
+    height: $pagination-item-size;
+    width: $pagination-item-size;
+  }
+
+  .disabled {
+    opacity: 0.5;
+  }
+}

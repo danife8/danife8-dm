@@ -1,0 +1,92 @@
+<%= render "shared/form_errors", resource: new_resource.errors.any? ? new_resource : resource %>
+
+<table class="table table-striped mb-4">
+  <thead>
+    <tr>
+      <th>Position</th>
+      <% if render_objective_field %>
+        <th>Objective</th>
+      <% end %>
+      <th>Label</th>
+      <th>Value</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% collection.each do |list_item| %>
+      <% is_current_list_item = resource.id === list_item.id %>
+
+      <tr
+        data-controller="editable-row"
+        class="<%= resource.errors.any? && is_current_list_item ? 'row-with-errors' : '' %>"
+        data-action="editable-cell:blur->editable-row#setButtonState"
+      >
+        <% position = is_current_list_item ? resource.position : list_item.position %>
+        <%= render "shared/editable_cell", text_content: position do |data| %>
+          <%= number_field_tag "#{form_object_name}[position]", position, class: "form-control", placeholder: 'Choose Position', form: "list-item-#{list_item.id}", required: true, data: %>
+        <% end %>
+
+        <% if render_objective_field %>
+          <%= render "shared/editable_cell", value_content: list_item.campaign_objective_id, text_content: list_item.campaign_objective.label do |data| %>
+            <%= select_tag "#{form_object_name}[campaign_objective_id]", options_for_select(
+              CampaignObjective.pluck(:label, :id), list_item.campaign_objective_id
+            ), class: "form-control", placeholder: 'Choose Objective', form: "list-item-#{list_item.id}", required: true, data: %>
+          <% end %>
+        <% end %>
+
+        <% label = is_current_list_item ? resource.label : list_item.label %>
+        <%= render "shared/editable_cell", text_content: label do |data| %>
+          <%= text_field_tag "#{form_object_name}[label]", label, class: "form-control", placeholder: 'Choose Position', form: "list-item-#{list_item.id}", required: true, data: %>
+        <% end %>
+
+        <% value = is_current_list_item ? resource.value : list_item.value %>
+        <%= render "shared/editable_cell", text_content: value do |data| %>
+          <%= text_field_tag "#{form_object_name}[value]", value, class: "form-control", placeholder: 'Choose Position', form: "list-item-#{list_item.id}", required: true, data: %>
+        <% end %>
+
+        <td>
+          <ul class="d-flex list-unstyled m-0 row">
+            <li class="col-6">
+              <%= submit_tag "Save", class: "btn btn-primary w-100 js-button", form: "list-item-#{list_item.id}", disabled: true, data: { "editable-row-target": "button" } %>
+            </li>
+            <li class="col-6">
+              <%= link_to "Delete", send(:path_for, :delete, list_item), class: "btn btn-danger w-100", data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+            </li>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+
+    <%= form_with url: path_for(:create), model: new_resource, method: :post, id: "new_resource" do |form| %>
+      <tr class="new-form sticky-bottom bg-darker-blue" data-controller="autogenerate-value">
+        <td>
+          <%= form.number_field :position, value: new_resource.position.present? ? new_resource.position : next_position,
+            class: "form-control", placeholder: 'Choose Position', form: "new_resource", required: true, min: 0 %>
+        </td>
+        <% if render_objective_field %>
+          <td>
+            <%= form.select :campaign_objective_id, CampaignObjective.pluck(:label, :id), { include_blank: 'Choose Objective'}, class: "form-control", form: "new_resource", required: true %>
+          </td>
+        <% end %>
+        <td>
+          <%= form.text_field :label, value: new_resource.label, class: "form-control", placeholder: 'Choose Label', form: "new_resource",
+            required: true, data: { "autogenerate-value-target": "source", action: "keyup->autogenerate-value#onChangeSource" } %>
+        </td>
+        <td>
+          <%= form.text_field :value, value: new_resource.value, class: "form-control", placeholder: 'Choose value', form: "new_resource",
+            required: true, data: { "autogenerate-value-target": "target" } %>
+        </td>
+        <td>
+          <%= form.submit "Add New", class: "btn btn-primary w-100", form: "new_resource" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="d-none">
+  <% collection.each do |resource| %>
+    <%= form_with url: send(:path_for, :update, resource), model: resource, method: :patch, id: "list-item-#{resource.id}" do |form| %>
+    <% end %>
+  <% end %>
+</div>

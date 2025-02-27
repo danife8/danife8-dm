@@ -1,0 +1,46 @@
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Campaign Duration:</strong>
+  </div>
+  <div>
+    <%= resource.campaign_starts_on.strftime('%m/%d/%Y') %> - <%= resource.campaign_ends_on.strftime('%m/%d/%Y') %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Budget:</strong>
+  </div>
+  <div>
+    <%= number_to_currency(resource.campaign_budget) %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Destination URL:</strong>
+  </div>
+  <div>
+    <%= resource.destination_url %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Official Social Platforms:</strong>
+  </div>
+  <div>
+    <% resource.social_platforms_list.each do |social_platform| %>
+      <div><%= social_platform.label %></div>
+    <% end %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Advertising Enabled:</strong>
+  </div>
+  <div>
+    <% resource.social_advertising_access_list.each do |social_advertising| %>
+      <div>        
+        <%= social_advertising.label %> - <%= boolean_to_text social_advertising.value %>
+      </div>
+    <% end %>
+  </div>
+</div>

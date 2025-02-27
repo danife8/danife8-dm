@@ -1,0 +1,58 @@
+<section class="d-flex flex-column h-100">
+  <%= render "shared/page_heading", title: "Checklist | Campaign - #{resource.insertion_order.title}", class_name: "mb-5" %>
+
+  <table class="table table-striped">
+    <thead>
+      <th scope="col">Task</th>
+      <th scope="col">Status</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <% resource&.only_documents_required.each do |option_key, values| %>
+        <tr>
+          <% if option_key != :sign_insertion_order %>
+            <td><%= "Upload Current/#{values[:label]}" %></td>
+            <% if values[:completed] %>
+              <td><i class="bi bi-check-circle-fill"></i></td>
+            <% else %>
+              <td>Incomplete</td>
+            <% end %>
+            <td class="text-center">
+              <%= link_to "Upload", documents_request_upload_documents_path(documents_request_id: resource.id, files_for: option_key), class: "btn btn-primary" %>
+              <%= link_to "Edit", edit_documents_request_path(id: resource.id, files_for: option_key), class: "btn btn-primary" %>
+              <% unless values[:completed] %>
+                <%= button_to "Mark as Completed",
+                  documents_request_path(resource),
+                  method: :patch,
+                  params: { documents_request: { option_key => { completed: true } } },
+                  form_class: "d-inline",
+                  class: "btn btn-primary"
+                %>
+              <% end %>
+            </td>
+          <% else %>
+            <td><%= "#{values[:label]}" %></td>
+            <td>
+              <% if values[:completed] %>
+                <i class="bi bi-check-circle-fill"></i>
+              <% else %>
+                Incomplete
+              <% end %>
+            </td>
+            <td class="text-center">
+              <% unless values[:completed] %>
+                <%= button_to "Mark as Completed",
+                  documents_request_path(resource),
+                  method: :patch,
+                  params: { documents_request: { option_key => { completed: true } } },
+                  form_class: "d-inline",
+                  class: "btn btn-primary"
+                %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

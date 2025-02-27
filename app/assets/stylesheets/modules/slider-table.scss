@@ -1,0 +1,8 @@
+.slider-table {
+  --swiper-pagination-bullet-size: 15px;
+  --swiper-navigation-sides-offset: -30px;
+
+  .swiper-wrapper {
+    padding-bottom: calc(var(--swiper-pagination-bullet-size) * 2);
+  }
+}

@@ -1,0 +1,33 @@
+<%= render "shared/page_heading", title: "Details and History", class_name: "mb-5" %>
+
+<table class="table align-middle">
+  <thead>
+    <tr>
+      <th>Published</th>
+      <th>Changed by</th>
+      <th>Comment</th>
+      <th>Status</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% resource.versions.reverse.each do |history| %>
+      <% media_plan = history.reify %>
+      <% if media_plan %>
+        <tr>
+          <td><%= l history.created_at, format: :only_date  %></td>
+          <td><%= media_plan_history_changed_by(history) %></td>
+          <td>
+            <div><%= media_plan_history_comment(media_plan) %></div>
+          </td>
+          <td><%= media_plan_history_modified_status(media_plan) + media_plan_status(media_plan.aasm_state) %></td>
+          <td>
+            <% if policy(resource).restore_version? %>
+              <%= button_to 'Restore version', restore_version_media_plan_path(media_plan, history.id), method: :post, data: { confirm: 'Are you sure you want to restore the version of the Media Plan?' }, class: 'btn btn-primary btn-sm' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

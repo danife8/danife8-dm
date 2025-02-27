@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+      /* General Styles */
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+      p {
+        margin-bottom: 16px;
+      }
+      a.button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        font-size: 16px;
+      }
+      a.button:hover {
+        background-color: #0056b3;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        background-color: #ffffff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="email-container">
+      <p>Dear <%= @documents_request.sender.full_name %>.</p>
+      <p>For the Campaign: <%= @documents_request.insertion_order.title %></p>
+      <p>We are pleased to inform you that a user has marked as completed the task <%= @requested_option[:label] %> today <%= Time.zone.now.strftime("%m/%d/%y at %I:%M%p") %>.</p>
+      <p>
+        You can verify the checklist in the link below:
+        <br/><br/>
+        <a href="<%= documents_request_url(@documents_request) %>" target="_blank" class="button">View Checklist</a>
+      </p>
+
+    </div>
+  </body>
+</html>

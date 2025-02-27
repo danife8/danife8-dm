@@ -1,0 +1,9 @@
+.filterable {
+  &-dropdown-menu {
+    --bs-dropdown-min-width: 15rem;
+
+    .form-check-input {
+      --bs-border-color: #{$dark-blue};
+    }
+  }
+}

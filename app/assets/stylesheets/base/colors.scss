@@ -1,0 +1,60 @@
+$light-blue: #beebff;
+$yellow-green: #c9db4e;
+$mid-blue: #004bff;
+$dark-blue: #001e6e;
+$darker-blue: #000f32;
+$mid-gray: #b3b6b7;
+
+// Override bootstrap colors
+// theme-color-variables
+$primary: $yellow-green;
+
+// variable-gradient
+$gradient: linear-gradient(180deg, $mid-blue 0%, $dark-blue 100%);
+
+// Settings for the `<body>` element
+$body-color: $light-blue;
+
+// nav-variables
+$nav-link-color: $light-blue;
+
+// form-input-variables
+$input-color: $dark-blue;
+$input-placeholder-color: mix($dark-blue, $light-blue, 50%);
+$input-focus-border-color: $dark-blue;
+$input-disabled-bg: $mid-gray;
+
+// form-check-variables
+$form-check-input-checked-color: $dark-blue;
+
+// table-variables
+$table-color: $light-blue;
+$table-bg: transparent;
+
+// dropdown-variables
+$dropdown-color: $dark-blue;
+$dropdown-link-color: $dark-blue;
+
+// pagination-variables
+$pagination-color: $dark-blue;
+$pagination-bg: $yellow-green;
+$pagination-border-color: transparent;
+
+$pagination-hover-color: white;
+$pagination-hover-bg: $mid-blue;
+$pagination-hover-border-color: transparent;
+
+$pagination-active-color: white;
+$pagination-active-bg: $mid-blue;
+$pagination-active-border-color: transparent;
+
+$pagination-focus-color: white;
+$pagination-focus-bg: $mid-blue;
+$pagination-focus-border-color: transparent;
+
+$pagination-disabled-color: $dark-blue;
+$pagination-disabled-bg: $yellow-green;
+$pagination-disabled-border-color: transparent;
+
+// border-variables
+$border-color: rgba($light-blue, 0.2);

@@ -1,0 +1,9 @@
+$logo-size: 112px;
+
+.logo {
+  max-width: $logo-size;
+
+  &-large {
+    max-width: $logo-size * 2;
+  }
+}

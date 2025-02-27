@@ -1,0 +1,173 @@
+<div class="container request-documents" data-controller="request-documents">
+  <%= form_with model: documents_request, local: true do |form| %>
+    <div data-request-documents-target="firstPage">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Question</th>
+            <th scope="col">Response</th>
+            <th scope="col">Request</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Do you have any current/previous digital campaign results to share?</td>
+            <td>
+              <i>
+                <%= previous_data_value_to_label(resource.media_brief.previous_campaign_data) %>
+              </i>
+            </td>
+            <td class="form-switch">
+              <%= hidden_field_tag "documents_request[previous_campaign_data][value]", false %>
+              <%= check_box_tag "documents_request[previous_campaign_data][value]",
+                true,
+                documents_request.documents_requested[:previous_campaign_data][:value],
+                class: "form-check-input mx-0",
+                data: { request_documents_target: "checkbox", action: "input->request-documents#validateInputs input->request-documents#renderChecklistItem" }
+              %>
+            </td>
+          </tr>
+          <tr>
+            <td>Is there any current/previous customer data (CRM) available to use?</td>
+            <td>
+              <i>
+                <%= previous_data_value_to_label(resource.media_brief.previous_customer_data) %>
+              </i>
+            </td>
+            <td class="form-switch">
+              <%= hidden_field_tag "documents_request[previous_customer_data][value]", false %>
+              <%= check_box_tag "documents_request[previous_customer_data][value]",
+                "true",
+                documents_request.documents_requested[:previous_customer_data][:value],
+                class: "form-check-input mx-0",
+                data: { request_documents_target: "checkbox", action: "input->request-documents#validateInputs input->request-documents#renderChecklistItem" }
+              %>
+            </td>
+          </tr>
+          <tr>
+            <td>Upload Creative Assets</td>
+            <td>
+              <i>
+                <%= 
+                  if resource.media_brief.creative_assets.key(true)
+                    "Yes"
+                    else
+                    "No"
+                  end
+                %>
+              </i>
+            </td>
+            <td class="form-switch">
+              <%= hidden_field_tag "documents_request[creative_assets][value]", false %>
+              <%= check_box_tag "documents_request[creative_assets][value]",
+                "true",
+                documents_request.documents_requested[:creative_assets][:value],
+                class: "form-check-input mx-0",
+                data: { request_documents_target: "checkbox", action: "input->request-documents#validateInputs input->request-documents#renderChecklistItem" }
+              %>
+            </td>
+          </tr>
+          <tr>
+            <td>Sign Insertion Order</td>
+            <td>
+              <i>
+                <%=
+                  if resource.insertion_order.signature_request&.completed?
+                    "Yes"
+                    else
+                    "No"
+                  end
+                %>
+              </i>
+            </td>
+            <td class="form-switch">
+              <%= hidden_field_tag "documents_request[sign_insertion_order][value]", false %>
+              <%= check_box_tag "documents_request[sign_insertion_order][value]",
+                "true",
+                documents_request.documents_requested[:sign_insertion_order][:value],
+                class: "form-check-input mx-0",
+                data: { request_documents_target: "checkbox", action: "input->request-documents#validateInputs input->request-documents#renderChecklistItem" }
+              %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="checklist mt-4" id="<%= resource&.documents_request.presence ? "documentsRequestPresence" : "" %>">
+        <h5>Checklist</h5>
+        <div class="checklist">
+          <div class="d-none checklist-item" id="documents_request_previous_campaign_data_value">
+            <p>Upload current/previous digital campaign results.</p>
+            <i class="mx-3 bi bi-x-lg" data-action="click->request-documents#removeItemFromChecklist"></i>
+          </div>
+          <div class="d-none checklist-item" id="documents_request_previous_customer_data_value">
+            <p>Upload current/previous customer data (CRM).</p>
+            <i class="mx-3 bi bi-x-lg" data-action="click->request-documents#removeItemFromChecklist"></i>
+          </div>
+          <div class="d-none checklist-item" id="documents_request_creative_assets_value">
+            <p>Upload Creative assets.</p>
+            <i class="mx-3 bi bi-x-lg" data-action="click->request-documents#removeItemFromChecklist"></i>
+          </div>
+          <div class="d-none checklist-item" id="documents_request_sign_insertion_order_value">
+            <p>Sign insertion Order.</p>
+            <i class="mx-3 bi bi-x-lg" data-action="click->request-documents#removeItemFromChecklist"></i>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" data-action="click->request-documents#nextAction">
+          Next
+        </button>
+      </div>
+    </div>
+
+    <div class="d-none" data-request-documents-target="secondPage">
+      <% js_controller_name, js_controller_name_target = "request-documents", "request_documents_target" %>
+      <%= render "select_or_add_client_user_fields", js_controller_name:, js_controller_name_target:, form: %>
+      <%= form.hidden_field :insertion_order_id, value: resource.insertion_order.id %>
+
+      <div class="mt-3 d-flex justify-content-end">
+        <button type="button" class="mx-3 btn btn-primary" data-action="click-><%= js_controller_name %>#backAction">Back</button>
+        <%= form.submit "Request",
+          id: "request-files",
+          class: "btn btn-primary",
+          data: { "#{js_controller_name_target}": "sendRequestButton" },
+          disabled: true
+        %>
+      </div>
+
+      <% if resource&.documents_request.presence %>
+        <div class="w-50">
+          <table class="table">
+            <thead>
+              <tr>
+                <th colspan="3">
+                  <h5>Resend Request Email</h5>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% resource.documents_request.users.each do |user| %>
+                <tr>
+                  <td class="border-bottom-0"><%= user.full_name %></td>
+                  <td class="border-bottom-0"><%= user.email %></td>
+                  <td class="text-center border-bottom-0">
+                    <%= button_to "Resend",
+                      false,
+                      data: {
+                        action: "click->request-documents#sendReminder request-documents:showAlert->alert#show",
+                        request_url: send_reminder_documents_request_path(resource.documents_request.id),
+                        user_id: user.id
+                      },
+                      class: "btn btn-primary"
+                    %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

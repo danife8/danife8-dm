@@ -1,0 +1,14 @@
+<section class="d-flex flex-column h-100">
+  <%= render "shared/page_heading", title: "Documents | Campaign - #{resource.insertion_order.title}", class_name: "mb-5" do %>
+    <div>
+      <% if resource.documents_request.present? %>
+        <%= link_to "Add Client User", add_client_user_campaign_path(resource), class: "btn btn-primary" %>
+        <%= link_to "View Checklist", edit_documents_request_campaign_path(resource), class: "btn btn-primary" %>
+      <% else %>
+        <%= link_to "Request Documents", request_documents_campaign_path(resource), class: "btn btn-primary" %>
+      <% end %>
+      <%= link_to "Upload Documents", campaign_upload_documents_path(campaign_id: resource.id), class: "btn btn-primary" %>
+    </div>
+  <% end %>
+  <%= render "documents/documents_list", collection: %>
+</section>

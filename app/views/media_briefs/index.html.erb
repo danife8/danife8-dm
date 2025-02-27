@@ -1,0 +1,59 @@
+<section
+  class="l-media-briefs position-absolute overflow-hidden d-flex flex-column h-100 w-100 top-0 start-0 p-5"
+>
+  <%= image_tag("icon-robot-head-blue.svg", class: "icon-robot position-absolute") %>
+  <%= image_tag("icon-4-in-1.svg", class: "icon-4-in-1 position-absolute") %>
+
+  <%= render "shared/page_heading", title: "Media Briefs", class_name: "mb-5" do %>
+    <div class="d-flex">
+      <%= render "shared/filterable", get_status: ->(status) { media_brief_status(status) } %>
+      <%= link_to "New Media Brief", new_media_brief_builder_path, class: "btn btn-primary ms-3" %>
+    </div>
+  <% end %>
+
+  <div class="table-container overflow-auto position-relative h-100">
+    <table class="table align-middle mb-5">
+      <thead>
+        <th scope="col">Title</th>
+        <th scope="col">Client</th>
+        <th scope="col">Created date</th>
+        <th scope="col">Status</th>
+        <th scope="col" class="text-center">Options</th>
+      </thead>
+      <tbody>
+      <% collection.each do |media_brief| %>
+        <tr>
+          <td>
+            <span><%= media_brief.title %></span>
+            <% if current_user.super_admin? %>
+              <em class="fs-8"><%= media_brief.client.agency_name %></em>
+            <% end %>
+          </td>
+          <td><%= media_brief.client.name %></td>
+          <td>
+            <%= l media_brief.created_at, format: :only_date %>
+          </td>
+          <td>
+            <%= media_brief_status(media_brief.aasm_state) %>
+          </td>
+          <td class="links-column text-center">
+            <div class="dropdown">
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><%= link_to "Review", media_brief, class: "dropdown-item" %></li>
+                <li><%= link_to "Details and History", edit_media_brief_path(media_brief), class: "dropdown-item #{'disabled' unless policy(media_brief).edit?}" %></li>
+                <li><%= link_to "Share", download_ppt_media_brief_path(media_brief), class: "dropdown-item #{'disabled' unless policy(media_brief).download_ppt?}" %></li>
+                <li><%= link_to "Archive", media_brief, method: :delete, data: {
+                  turbo_confirm: "Archiving the Media Brief record also archives their Media Mixes, Media Plans. Are you sure?", turbo_method: :delete
+                }, class: "dropdown-item #{policy(media_brief).destroy? ? 'text-danger' : 'disabled'}" %></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <%= paginate collection %>
+  </div>
+</section>

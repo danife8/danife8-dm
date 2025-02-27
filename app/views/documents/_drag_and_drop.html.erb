@@ -1,0 +1,57 @@
+<div class="row" data-controller="drag-and-drop">
+  <% if @errors&.any? %>
+    <div class="pb-3">
+      <ul class="list-group">
+        <% @errors.each do |error| %>
+          <li class="list-group-item list-group-item-danger"><%= error %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <h5>Drag and Drop Add-on</h5>
+  <div class="column w-50">
+    <%= form_with model: @document, url: campaign_documents_path(campaign_id), local: true do |form| %>
+      <div class="input-group mb-3">
+        <%= form.file_field :files,
+          multiple: true,
+          direct_upload: true,
+          data: {
+            action: "change->drag-and-drop#selectFiles",
+            drag_and_drop_target:"fileInput",
+            direct_upload_url: rails_direct_uploads_url
+            },
+          hidden: true
+        %>
+        <span class="form-control" data-action="click->drag-and-drop#trigger" readonly>Choose Files</span>
+        <label data-action="click->drag-and-drop#trigger" class="btn btn-secondary">Choose file</label>
+      </div>
+    
+    <div class="drag-drop-area border-dashed rounded p-4 mt-3" data-action="drop->drag-and-drop#acceptFiles">
+      <i class="bi bi-cloud-arrow-up"></i>
+      <p class="m-0">Drag and drop files here</p>
+    </div>
+    <%= form.hidden_field :files_for, value: params[:files_for] %>
+    <div class="d-flex mt-3 align-items-center justify-content-between">
+      <%= form.submit "Upload",
+        id: "file-upload",
+        class: "btn btn-primary",
+        data: { drag_and_drop_target: 'fileUploadButton' },
+        disabled: true
+      %>
+    <% end %>
+      <i>Max file size 25mb</i>
+      <div class="tooltip-container">
+        <i class="bi bi-info-circle-fill"></i>
+        <i>Permited files</i>
+        <span class="tooltip-text bottom">
+          .avi .bmp .csv .doc .docx .flv .gif .ico .jpeg .jpg 
+          .m2ts .mov .mp3 .mp4 .pdf .png .ppt .pptx .psd .psd 
+          .tif .tiff .txt .wav .webm .webp .wmv .xls .xlsx .zip 
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="column w-50">
+    <div id="file-list" data-drag-and-drop-target="fileList" class="input-group flex-column"></div>
+  </div>
+</div>

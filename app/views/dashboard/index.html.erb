@@ -1,0 +1,44 @@
+<section
+  class="l-dashboard position-absolute overflow-hidden d-flex flex-column h-100 w-100 top-0 start-0 p-5"
+>
+  <%= image_tag("icon-robot-head-blue.svg", class: "icon-robot position-absolute") %>
+  <%= image_tag("icon-circle.svg", class: "icon-circle position-absolute") %>
+  <%= image_tag("icon-star-6.svg", class: "icon-star-6 position-absolute") %>
+
+  <%= render "shared/page_heading", title: "Draft Media Briefs", section_title: "Dashboard", class_name: "mb-5" do %>
+    <p class="m-0">Welcome to the Digital Mouth Storm Center</p>
+  <% end %>
+
+  <div class="table-container overflow-auto position-relative h-100">
+    <table class="table align-middle mb-0">
+      <thead>
+        <th scope="col">Title</th>
+        <th scope="col">Client</th>
+        <th scope="col">Status</th>
+        <th scope="col" colspan="2" class="col-1">&nbsp;</th>
+      </thead>
+      <tbody>
+      <% media_briefs.each do |media_brief| %>
+        <tr>
+          <td>
+            <span><%= media_brief.title %></span>
+            <% if current_user.super_admin? %>
+              <em class="fs-8"><%= media_brief.client.agency_name %></em>
+            <% end %>
+          </td>
+          <td><%= media_brief.client.name %></td>
+          <td>
+            Step <%= media_brief.current_step %>
+          </td>
+          <td>
+            <%= link_to "Resume", [:edit, media_brief, step: media_brief.current_step], class: 'btn btn-primary btn-sm' %>
+          </td>
+          <td>
+            <%= link_to "Archive", media_brief, method: :delete, data: { turbo_confirm: "Are you sure?", turbo_method: :delete }, class: "btn btn-outline-primary btn-sm" %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>

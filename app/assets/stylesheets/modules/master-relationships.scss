@@ -1,0 +1,33 @@
+.master-relationships {
+  // Override bootstrap dropdown active item styles
+  .dropdown-item.active,
+  .dropdown-item:active {
+    background-color: var(--bs-gray-300);
+  }
+
+  // Sortable feature
+  .sortable-row {
+    cursor: move;
+  }
+
+  .not-sortable-row .icon-drag {
+    visibility: hidden;
+  }
+
+  .sortable-hovered td {
+    background-color: var(--bs-table-active-bg);
+  }
+
+  .sortable-placeholder td,
+  .sortable-dragging td {
+    background-color: $darker-blue;
+  }
+
+  .icon-drag-container {
+    width: 30px;
+  }
+
+  .icon-drag {
+    left: -6px;
+  }
+}

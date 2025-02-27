@@ -1,0 +1,23 @@
+.l-dashboard {
+  .icon-robot {
+    bottom: 0;
+    left: 18px;
+    width: 158px;
+    transform: rotate(90deg);
+  }
+
+  .icon-circle {
+    right: -120px;
+    bottom: -240px;
+  }
+
+  .icon-star-6 {
+    width: 331px;
+    right: -125px;
+    bottom: 60px;
+  }
+
+  .table-container {
+    margin-bottom: 150px; // Ensure that the table does not overlap the robot icon.
+  }
+}

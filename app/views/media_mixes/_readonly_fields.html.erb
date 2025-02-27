@@ -1,0 +1,21 @@
+<div>
+  <div class="mb-3">
+    <label class="form-label">Title</label>
+    <%= text_field_tag :title, media_mix.title, class: "form-control", readonly: true %>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Client</label>
+    <%= text_field_tag :client, media_mix.client.name, class: "form-control", readonly: true %>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Media Brief</label>
+    <%= text_field_tag :media_brief, media_mix.media_brief.title, class: "form-control", readonly: true %>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Status</label>
+    <%= text_field_tag :aasm_state, media_mix_status(media_mix.aasm_state), class: "form-control", readonly: true %>
+  </div>
+</div>

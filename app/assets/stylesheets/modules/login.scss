@@ -1,0 +1,34 @@
+.login {
+  &-inner-container {
+    max-width: 500px;
+  }
+
+  &-separator {
+    margin: 1.5rem 0;
+  }
+
+  &-icon-robot {
+    top: -45px;
+    left: -20px;
+    transform: rotate(135deg);
+  }
+
+  &-icon-star-12 {
+    top: -135px;
+    right: -125px;
+    width: 430px;
+  }
+
+  &-icon-star-6 {
+    bottom: -75px;
+    left: -130px;
+    width: 433px;
+  }
+
+  &-icon-4-in-1 {
+    bottom: 100px;
+    right: -100px;
+    width: 568px;
+    transform: rotate(-45deg);
+  }
+}

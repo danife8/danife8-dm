@@ -1,0 +1,29 @@
+<div class="mb-3">
+  <label class="form-label fw-bold">What Creative Asset types will be available for this campaign?</label>
+  <div class="card">
+    <div class="card-body">
+      <% creative_asset_options.each_with_index do |asset, index| %>
+        <div class="form-check">
+          <%= hidden_field_tag "#{form.object_name}[creative_assets][#{asset.value}]", false, id: asset.value %>
+          <%= check_box_tag "#{form.object_name}[creative_assets][#{asset.value}]", "true", resource.creative_assets[asset.value], class: 'form-check-input js-creative-asset', data: { action: "change->media-brief-form-step-7#onChange", index: } %>
+          <%= form.label "creative_assets_#{asset.value}", asset.label, class: 'form-check-label' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="mb-3">
+  <label class="form-label fw-bold">Are there any channels to be excluded from this campaign? </label>
+  <div class="card">
+    <div class="card-body">
+      <% campaign_channel_options.each do |channel| %>
+        <div class="form-check">
+          <%= hidden_field_tag "#{form.object_name}[campaign_channels][#{channel.value}]", false, id: channel.value %>
+          <%= check_box_tag "#{form.object_name}[campaign_channels][#{channel.value}]", "true", resource.campaign_channels[channel.value], class: 'form-check-input js-campaign-channel' %>
+          <%= form.label "campaign_channels_#{channel.value}", channel.label, class: 'form-check-label' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

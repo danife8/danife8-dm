@@ -1,0 +1,20 @@
+$primary-font: "Work Sans", sans-serif;
+$secondary-font: "Zodiak", sans-serif;
+
+// Override bootstrap colors
+// font-variables
+$font-family-base: $primary-font;
+
+// headings-variables
+$headings-font-family: $secondary-font;
+
+// nav-variables
+$nav-link-color: $light-blue;
+$nav-link-font-size: 1.25rem;
+$nav-link-font-weight: 540;
+
+// btn-variables
+$btn-font-weight: 700;
+
+// pagination-variables
+$pagination-font-size: 0.875rem;

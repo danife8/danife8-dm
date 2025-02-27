@@ -1,0 +1,46 @@
+<section class="media-mixes-page">
+  <%= render "shared/page_heading", title: "Media Plan", class_name: "mb-5" %>
+
+  <div class="mb-4">
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <%= text_field_tag :title, resource.title, class: "form-control", readonly: true %>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Client</label>
+      <%= text_field_tag :client, resource.client.name, class: "form-control", readonly: true %>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Media Mix</label>
+      <%= text_field_tag :media_brief, resource.media_mix.title, class: "form-control", readonly: true %>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Media Brief</label>
+      <%= text_field_tag :media_brief, resource.media_brief.title, class: "form-control", readonly: true %>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Status</label>
+      <%= text_field_tag :aasm_state, media_plan_modified_status(resource) + media_plan_status(resource.aasm_state), class: "form-control", readonly: true %>
+    </div>
+  </div>
+
+  <%= render 'navigation', results_path: media_plan_path(resource.id) %>
+
+  <% if keywords.any? %>
+    <ol class="list-group list-group-numbered">
+      <% keywords.each do |keyword| %>
+        <li class="list-group-item text-dark"><%= keyword %></li>
+      <% end %>
+    </ol>
+  <% else %>
+    <div class="d-flex justify-content-center align-items-center p-5">
+      <div class="alert alert-warning text-center" role="alert">
+        No data available.
+      </div>
+    </div>
+  <% end %>
+</section>

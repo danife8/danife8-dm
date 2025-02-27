@@ -1,0 +1,22 @@
+<!-- Modal -->
+<div class="modal fade" id="assignModal<%= media_plan.id %>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_for media_plan, url: reviewer_assign_media_plan_path(media_plan), method: :put do |form| %>
+        <div class="modal-body">
+          <h5 class="font-primary text-dark mb-4">
+            Select a new reviewer
+          </h5>
+          <div class="form-floating">
+            <%= form.select :reviewer_id, options_for_select(reviewer_options, nil), { include_blank: true }, { class: 'form-control text-dark' } %>
+            <%= form.label :reviewer_id, 'Reviewer', class: 'text-dark' %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back</button>
+          <button class="btn btn-primary">Reassign</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

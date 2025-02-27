@@ -1,0 +1,9 @@
+Dear <%= @documents_request.sender.full_name %>.
+
+For the Campaign: <%= @documents_request.insertion_order.title %>
+We are pleased to inform you that a user has marked as completed the task <%= @requested_option[:label] %> today <%= Time.zone.now.strftime("%m/%d/%y at %I:%M%p") %>.
+
+You can verify the checklist in the link below:
+<%= documents_request_url(@documents_request) %>
+
+Best Regards.

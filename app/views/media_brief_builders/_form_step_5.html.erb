@@ -1,0 +1,117 @@
+<div data-controller="geographic-target"
+  data-geographic-target-main-map-value="<%= dependent_fields_map[:main].to_json %>"
+  data-geographic-target-sub-map-value="<%= dependent_fields_map[:sub].to_json %>"
+>
+  <div class="mb-3">
+    <label class="form-label fw-bold mb-3">How do you want the media delivered, geographically? Please select one option.</label>
+    <div>
+      <%= select_tag "#{form.object_name}[geographic_target]",
+                      options_for_select(
+                        GeographicTarget.main.map { |gt| [gt.label, gt.key] },
+                        resource.geographic_target
+                      ),
+                      include_blank: "",
+                      class: "form-select",
+                      data: { action: "change->geographic-target#onChange", target_type: "main" }
+                    %>
+    </div>
+  </div>
+
+  <%= hidden_field_tag :current_geographic_filters, resource.geographic_filters.size, data: {
+    "media-brief-form-step-5-target": "geographicFilters"
+  } %>
+  <%= form.fields_for :geographic_filters do |geographic_filters_form| %>
+    <%= geographic_filters_form.hidden_field :_destroy, value: true %>
+  <% end %>
+
+  <div class="mb-3 js-field-container <%= hidden_class(resource.geographic_target != 'multi_state') %>">
+    <div>
+      <%= form.label :state, "Multi-state/State:", class: 'form-label' %>
+      <small class="text-muted">States should be separated by line.</small>
+    </div>
+    <%= form.text_area :state,
+                        data: { geographic_filter_type: 'StateFilter' },
+                        rows: 5,
+                        class: 'form-control js-textbox-multi_state',
+                        placeholder: "WA\nCA\nTN",
+                        disabled: should_disable?(resource.geographic_target != 'multi_state')
+                      %>
+  </div>
+
+  <div class="mb-3 js-field-container <%= hidden_class(resource.geographic_target != 'multi_local') %>">
+    <%= form.select :multi_local_option,
+                    options_for_select(multi_local_options, resource.multi_local_option),
+                    { include_blank: "Select Multi-local option" },
+                    class: "form-select js-dropdown-multi_local",
+                    data: { action: "change->geographic-target#onChange", target_type: "sub" },
+                    disabled: should_disable?(resource.geographic_target != 'multi_local')
+                  %>
+  </div>
+
+  <div class="mb-3 js-field-container <%= hidden_class(resource.geographic_target != 'multi_local' || (resource.multi_local_option != 'city_state_zip' && resource.multi_local_option != 'city_state')) %>">
+    <div>
+      <%= form.label :city_state, "Multi-local:", class: 'form-label' %>
+      <small class="text-muted">City, State should be separated by line.</small>
+    </div>
+    <%= form.text_area :city_state,
+                        data: { geographic_filter_type: 'CityStateFilter' },
+                        rows: 5,
+                        class: 'form-control js-textbox-city_state',
+                        placeholder: "Seattle, WA\nNashville, TN",
+                        disabled: should_disable?(resource.geographic_target != 'multi_local' || (resource.multi_local_option != 'city_state_zip' && resource.multi_local_option != 'city_state'))
+                      %>
+  </div>
+
+  <div class="mb-3 js-field-container <%= hidden_class(resource.geographic_target != 'multi_local' || (resource.multi_local_option != 'city_state_zip' && resource.multi_local_option != 'zip')) %>">
+    <div>
+      <%= form.label :zip, "Zips: ", class: 'form-label' %>
+      <small class="text-muted">Zip codes should be separated by line.</small>
+    </div>
+    <%= form.text_area :zipcode,
+                        data: { geographic_filter_type: 'ZipcodeFilter' },
+                        rows: 5,
+                        class: 'form-control js-textbox-zip',
+                        placeholder: "30333\n30332\n30309",
+                        disabled: should_disable?(resource.geographic_target != 'multi_local' || (resource.multi_local_option != 'city_state_zip' && resource.multi_local_option != 'zip'))
+                      %>
+  </div>
+
+  <div class="mb-3 js-field-container <%= hidden_class(resource.geographic_target != 'local') %>">
+    <div>
+      <%= form.label :local_city_state, "Local:", class: 'form-label' %>
+      <small class="text-muted">Limit 1 location.</small>
+    </div>
+    <%= form.text_field :local_city_state,
+                        class: 'form-control js-textbox-local_city_state',
+                        placeholder: 'Atlanta, GA',
+                        data: { geographic_filter_type: 'CityStateFilter' },
+                        disabled: should_disable?(resource.geographic_target != 'local')
+                      %>
+  </div>
+
+  <div class="mb-3 js-field-container <%= hidden_class(resource.geographic_target != 'georadius') %>">
+    <div>
+      <%= form.label :address, "Address:", class: 'form-label' %>
+      <small class="text-muted">Addresses should be separated by line.</small>
+    </div>
+    <%= form.text_area :address,
+                        data: { geographic_filter_type: 'AddressFilter' },
+                        rows: 5,
+                        class: 'form-control js-textbox-address',
+                        placeholder: 'Address Line, City, State Zip',
+                        disabled: should_disable?(resource.geographic_target != 'georadius')
+                      %>
+  </div>
+
+  <div class="mb-3 js-field-container <%= hidden_class(resource.geographic_target != 'local' && resource.geographic_target != 'georadius') %>">
+    <%= form.label :radius, "Radius:", class: 'form-label' %>
+    <div class="d-flex align-items-center">
+      <%= form.text_field :radius,
+                          class: 'form-control w-auto js-textbox-radius',
+                          placeholder: '5',
+                          disabled: should_disable?(resource.geographic_target != 'local' && resource.geographic_target != 'georadius')
+                        %>
+      <span class="ms-2">Miles</span>
+    </div>
+  </div>
+</div>

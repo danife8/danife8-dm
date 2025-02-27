@@ -1,0 +1,7 @@
+<%= render "shared/page_heading", title: "New User"%>
+
+<div class="d-flex justify-content-end mb-5">
+  <%= link_to "Back to users", users_path, class: 'fs-7' %>
+</div>
+
+<%= render "form", user: @user %>

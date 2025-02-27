@@ -1,0 +1,136 @@
+<div class="mb-3">
+  Is there a specific visitor or customer demographic you would like to target?
+</div>
+
+<div class="mb-3">
+  <%= form.check_box :all_demographics,
+    data: { action: "change->media-brief-form-step-4#onChangeAllDemographics" } %>
+  <%= form.label :all_demographics, "All ages and genders", class: 'form-label' %>
+</div>
+
+<div class="mb-3">
+  Gender
+</div>
+
+<% DemographicGender.valid_keys_by_position.each do |demographic_gender_key| %>
+  <div class="mb-3">
+    <%= hidden_field_tag "#{form.object_name}[demographic_genders][#{demographic_gender_key}]", "false", id: demographic_gender_key %>
+    <%= check_box_tag "#{form.object_name}[demographic_genders][#{demographic_gender_key}]",
+      "true",
+      resource.demographic_genders[demographic_gender_key],
+      disabled: form.object.all_demographics || resource.demographic_genders["all"] && demographic_gender_key != "all",
+      data: {
+        action: demographic_gender_key == "all" ? "change->media-brief-form-step-4#onChangeAllGenders" : nil,
+        "media-brief-form-step-4-target": "genderCheckbox"
+      } %>
+    <%= form.label "demographic_genders_#{demographic_gender_key}", DemographicGender[demographic_gender_key], class: 'form-label' %>
+  </div>
+<% end %>
+
+<div class="mb-3">
+  Age
+</div>
+
+<% DemographicAge.valid_keys_by_position.each do |demographic_age_key| %>
+  <div class="mb-3">
+    <%= hidden_field_tag "#{form.object_name}[demographic_ages][#{demographic_age_key}]", "false", id: demographic_age_key %>
+    <%= check_box_tag "#{form.object_name}[demographic_ages][#{demographic_age_key}]",
+      "true",
+      resource.demographic_ages[demographic_age_key],
+      disabled: form.object.all_demographics || resource.demographic_ages["all"] && demographic_age_key != "all",
+      data: {
+        action: demographic_age_key == "all" ? "change->media-brief-form-step-4#onChangeAllAges" : nil,
+        "media-brief-form-step-4-target": "ageCheckbox"
+      } %>
+    <%= form.label "demographic_ages_#{demographic_age_key}", DemographicAge[demographic_age_key], class: 'form-label' %>
+  </div>
+<% end %>
+
+<div class="mb-3">
+  Please provide additional details about the interests and behaviors of the targets demographic
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :demographic_details1, '1', class: "form-label" %>
+  </div>
+
+  <div class="col-3">
+    <%= form.select :demographic_details1_prefix,
+      options_for_select(demographic_details_prefix_options, form.object.demographic_details1_prefix),
+      { include_blank: true },
+      { class: 'form-select' } %>
+  </div>
+
+  <div class="col">
+    <%= form.text_field :demographic_details1, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :demographic_details2, '2', class: "form-label" %>
+  </div>
+
+  <div class="col-3">
+    <%= form.select :demographic_details2_prefix,
+      options_for_select(demographic_details_prefix_options, form.object.demographic_details2_prefix),
+      { include_blank: true },
+      { class: 'form-select' } %>
+  </div>
+
+  <div class="col">
+    <%= form.text_field :demographic_details2, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :demographic_details3, '3', class: "form-label" %>
+  </div>
+
+  <div class="col-3">
+    <%= form.select :demographic_details3_prefix,
+      options_for_select(demographic_details_prefix_options, form.object.demographic_details3_prefix),
+      { include_blank: true },
+      { class: 'form-select' } %>
+  </div>
+
+  <div class="col">
+    <%= form.text_field :demographic_details3, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :demographic_details4, '4', class: "form-label" %>
+  </div>
+
+  <div class="col-3">
+    <%= form.select :demographic_details4_prefix,
+      options_for_select(demographic_details_prefix_options, form.object.demographic_details4_prefix),
+      { include_blank: true },
+      { class: 'form-select' } %>
+  </div>
+
+  <div class="col">
+    <%= form.text_field :demographic_details4, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="mb-3 row">
+  <div class="col-1 justify-content-end d-flex">
+    <%= form.label :demographic_details5, '5', class: "form-label" %>
+  </div>
+
+  <div class="col-3">
+    <%= form.select :demographic_details5_prefix,
+      options_for_select(demographic_details_prefix_options, form.object.demographic_details5_prefix),
+      { include_blank: true },
+      { class: 'form-select' } %>
+  </div>
+
+  <div class="col">
+    <%= form.text_field :demographic_details5, class: 'form-control' %>
+  </div>
+</div>

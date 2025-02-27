@@ -1,0 +1,54 @@
+<div data-controller="dependent-dropdowns">
+  <%= form_for(resource) do |form| %>
+    <%= render "shared/form_errors", resource: resource %>
+
+    <div class="mb-3">
+      <%= form.label :client_id, class: "form-label" %>
+      <%= form.select :client_id,
+                      options_for_select(
+                        clients.pluck(:name, :id),
+                        client&.id
+                      ), { include_blank: true },
+                      class: "form-select",
+                      required: true,
+                      data: {
+                        "dependent-dropdowns-target": "source",
+                        action: "change->dependent-dropdowns#onChangeSource",
+                        option_label_attr: "title",
+                        options_url: media_mixes_path(filter: { client_id: "placeholder_id" }, per: 250),
+                        options_key: "media_mixes"
+                      }
+      %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :title, class: "form-label" %>
+      <%= form.text_field :title, value: current_user.agency ? generate_media_title(MediaPlan, current_user) : '', autofocus: true, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3" data-dropdown-media-brief-target="target">
+      <%= form.label :media_mix_id, class: "form-label" %>
+      <%= form.select :media_mix_id,
+                      options_for_select(
+                        media_mixes.pluck(:title, :id),
+                        media_mix&.id
+                      ),
+                      { include_blank: true },
+                      class: "form-select",
+                      required: true,
+                      data: {
+                        "dependent-dropdowns-target": "target"
+                      }
+      %>
+    </div>
+
+    <div class="row d-flex justify-content-end">
+      <div class="col col-2">
+        <%= link_to "Cancel", media_plans_path, class: "btn btn-light w-100" %>
+      </div>
+      <div class="col col-2">
+        <%= form.submit edit_view ? "Save" : "Generate", class: "btn btn-primary w-100" %>
+      </div>
+    </div>
+  <% end %>
+</div>

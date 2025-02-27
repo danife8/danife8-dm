@@ -1,0 +1,41 @@
+.shared-form-table {
+  .field-disabled {
+    background-color: var(--bs-secondary-bg);
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .field_with_errors {
+    input,
+    select {
+      border-color: var(--bs-form-invalid-border-color);
+      box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.4);
+    }
+  }
+
+  .not-editable-text {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  .row-with-errors td {
+    background-color: var(--bs-danger-bg-subtle);
+  }
+
+  .new-form {
+    select,
+    input:not([type="submit"]) {
+      background-color: transparent;
+      color: $yellow-green;
+      border: none;
+    }
+
+    .field-disabled {
+      color: white;
+    }
+
+    td {
+      border: none;
+    }
+  }
+}

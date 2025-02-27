@@ -1,0 +1,372 @@
+<div
+  data-controller="media-plan-row mrt-filter-options media-plan-toggle-button"
+  data-campaign-objective-id="<%= media_plan.media_brief.campaign_objective_id %>"
+  data-campaign-initiative-id="<%= media_plan.media_brief.campaign_initiative_id %>"
+  data-url="<%= filter_options_master_relationships_path() %>"
+  data-errors-on-new-rows="<%= has_errors_on_rows?(media_plan) %>"
+>
+  <div class="overflow-auto">
+    <table class="table table-bordered text-center table-sm align-middle">
+      <thead>
+        <tr>
+          <td class="col"><strong>Client</strong></td>
+          <td class="col"><strong>Campaign</strong></td>
+          <td class="col"><strong>Flight Dates</strong></td>
+          <td class="col"><strong>Channel</strong></td>
+          <td class="col"><strong>Ad Platform</strong></td>
+          <td class="col"><strong>Campaign Goal</strong></td>
+          <td class="col"><strong>Campaign Action</strong></td>
+          <td class="col"><strong>Targeting Strategy</strong></td>
+          <td class="col"><strong>Target</strong></td>
+          <td class="col"><strong class="d-flex" style="width: 70px;">Age Range</strong></td>
+          <td class="col"><strong>Geographic Target</strong></td>
+          <td class="col"><strong>Primary Ad Format</strong></td>
+          <td class="col"><strong>ESTD CPM</strong></td>
+          <td class="col"><strong>ESTD Impr</strong></td>
+          <td class="col"><strong>Total Budget</strong></td>
+          <% if media_plan.assigned_to_reviewer? %>
+            <td class="col">
+              <div style="width: 120px;"></div>
+            </td>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody data-media-plan-row-target="container">
+        <% media_plan.media_plan_output.media_plan_output_rows.each_with_index do |row, row_index| %>
+          <tr data-media-plan-row-target="row">
+            <td>
+              <!--Sending Required id field-->
+              <%= hidden_field_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][id]", row.id %>
+              <%= media_plan.client.name %>
+            </td>
+            <td><%= media_brief.title %></td>
+            <td><%= media_brief.campaign_starts_on.strftime('%m/%d/%Y') %> - <%= media_brief.campaign_ends_on.strftime('%m/%d/%Y') %></td>
+            <td>
+              <% if row.new_record? %>
+                <%= select_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][campaign_channel_id]",
+                  options_for_select(
+                    filter_options(media_plan, {}, "campaign_channel"),
+                    row.campaign_channel_id
+                  ),
+                  include_blank: 'Channel',
+                  class: 'form-select fs-8',
+                  data: {
+                    action: "change->mrt-filter-options#onChange",
+                    "mrt-filter-options-target": "campaignChannel"
+                  }
+                %>
+              <% else %>
+                <%= row.campaign_channel.label %>
+              <% end %>
+            </td>
+            <td>
+              <% if row.new_record? %>
+                <%= select_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][media_platform_id]",
+                  options_for_select(
+                    filter_options(media_plan, { campaign_channel_id: row.campaign_channel_id }, "media_platform"),
+                    row.media_platform_id
+                  ),
+                  include_blank: 'Platform',
+                  class: 'form-select fs-8',
+                  data: {
+                action: "change->mrt-filter-options#onChange",
+                "mrt-filter-options-target": "mediaPlatform"
+              }
+                %>
+              <% else %>
+                <%= row.media_platform.label %>
+              <% end %>
+            </td>
+            <td><%= media_output.campaign_objective.label %></td>
+            <td><%= media_brief.campaign_initiative.label %></td>
+            <td>
+              <% if row.new_record? %>
+                <%= select_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][target_strategy_id]",
+                  options_for_select(
+                    filter_options(media_plan, {
+                      campaign_channel_id: row.campaign_channel_id,
+                      media_platform_id: row.media_platform_id
+                    }, "target_strategy"),
+                    row.target_strategy_id
+                  ),
+                  include_blank: 'Target Strategy',
+                  class: 'form-select fs-8',
+                  data: {
+                    action: "change->mrt-filter-options#onChange",
+                    "mrt-filter-options-target": "targetStrategy"
+                  }
+                %>
+              <% else %>
+                <%= row.target_strategy.label %>
+              <% end %>
+            </td>
+            <td>
+              <% if row.new_record? %>
+                <%= select_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][target_id]",
+                  options_for_select(
+                    filter_options(media_plan, {
+                      campaign_channel_id: row.campaign_channel_id,
+                      media_platform_id: row.media_platform_id,
+                      target_strategy_id: row.target_strategy_id,
+                    }, "target"),
+                    row.target_id
+                  ),
+                  include_blank: 'Target',
+                  class: 'form-select fs-8',
+                  data: {
+                  action: "change->mrt-filter-options#onChange",
+                  "mrt-filter-options-target": "target"
+                }
+                %>
+              <% else %>
+                <%= row.target.label %>
+              <% end %>
+            </td>
+            <td>
+              <div class="d-flex flex-column">
+                <% if media_brief.all_demographics %>
+                  <span>ALL</span>
+                <% else %>
+                  <% media_brief.demographic_ages_list.each do |age| %>
+                    <div><%= age %></div>
+                  <% end %>
+                <% end %>
+              </div>
+            </td>
+            <td><%= GeographicTarget.find(media_brief.geographic_target).short_label %></td>
+            <td>
+              <% if row.new_record? %>
+                <%= select_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][ad_format_id]",
+                options_for_select(
+                    filter_options(media_plan, {
+                      campaign_channel_id: row.campaign_channel_id,
+                      media_platform_id: row.media_platform_id,
+                      target_strategy_id: row.target_strategy_id,
+                      target_id: row.target_id,
+                    }, "ad_format"),
+                    row.ad_format_id
+                  ),
+                  include_blank: 'Target',
+                  class: 'form-select fs-8',
+                  data: {
+                    action: "change->mrt-filter-options#onChange",
+                    "mrt-filter-options-target": "adFormat"
+                  }
+                %>
+              <% else %>
+                <%= row.ad_format.label %>
+              <% end %>
+            </td>
+            <td><%= format_cpm(row.master_relationship&.cpm, row.target_strategy) %></td>
+
+            <% unless is_retargeting(row.target_strategy) %>
+              <!--Reviewer can modify these fields only after assigning the media plan-->
+              <% if media_plan.assigned_to_reviewer? %>
+                <%= render "shared/editable_cell", text_content: format_impr(row.impressions, row.target_strategy) do |data| %>
+                  <%= text_field_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][impressions]", row.impressions, class: "form-control text-center", form: form_id, data: data.merge(
+                    action: "blur->editable-cell#hideField keyup->currency-mask#onChange blur->media-plan-toggle-button#toggleButtons",
+                    controller: "currency-mask",
+                    "currency-mask-precision": 2,
+                    "currency-mask-pattern": "num",
+                    "media-plan-toggle-button-target": "input"
+                  ) %>
+                <% end %>
+              <% else %>
+                <td><%= format_impr(row.impressions, row.target_strategy) %></td>
+              <% end %>
+              <%= render "shared/editable_cell", text_content: number_to_currency(row.amt, precision: 2) do |data| %>
+                <%= text_field_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][amt]", number_with_precision(row.amt, precision: 2), class: "form-control text-center", form: form_id, data: data.merge(
+                  action: "blur->editable-cell#hideField keyup->currency-mask#onChange blur->media-plan-toggle-button#toggleButtons",
+                  controller: "currency-mask",
+                  "currency-mask-precision": 2,
+                  "media-plan-toggle-button-target": "input"
+                ) %>
+              <% end %>
+            <% else %>
+              <td><%= format_impr(row.impressions, row.target_strategy) %></td>
+              <td><%= currency(row.amt) %></td>
+            <% end %>
+
+            <% if media_plan.assigned_to_reviewer? %>
+              <td>
+                <div class="form-check d-flex justify-content-center pt-1">
+                  <%= hidden_field_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][_destroy]", "false", id: "hidden_#{row_index}" %>
+                  <%= check_box_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][_destroy]", "true", row._destroy, class: "form-check-input", id: "remove_row_#{row_index}", data: {
+                    "media-plan-toggle-button-target": "checkbox",
+                    action: "change->media-plan-toggle-button#toggleButtons"
+                  } %>
+                  <%= label_tag "remove_row_#{row_index}", "Remove", class: "ms-2 form-check-label" %>
+                </div>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+
+        <!--Totals-->
+        <tr>
+          <td colspan="13" class="text-center"><strong>Total</strong></td>
+          <td><strong><%= sum_imprs(media_plan) %></strong></td>
+          <td><strong><%= sum_media_plan_amts(media_plan) %></strong></td>
+          <% if media_plan.assigned_to_reviewer? %>
+            <td>&nbsp;</td>
+          <% end %>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <% if media_plan.assigned_to_reviewer? %>
+    <template data-media-plan-row-target="template">
+      <tr>
+        <td>
+          <%= hidden_field_tag "media_plan_output[media_plan_output_rows_attributes][NEW_ROW][id]", nil %>
+          <%= media_plan.client.name %>
+        </td>
+        <td><%= media_plan.media_brief.title %></td>
+        <td><%= media_plan.media_brief.campaign_starts_on.strftime('%m/%d/%Y') %> - <%= media_plan.media_brief.campaign_ends_on.strftime('%m/%d/%Y') %></td>
+        <td>
+          <%= select_tag "media_plan_output[media_plan_output_rows_attributes][NEW_ROW][campaign_channel_id]",
+            options_for_select(filter_options(media_plan, {}, "campaign_channel")),
+            include_blank: 'Channel',
+            class: 'form-select fs-8',
+            data: {
+              action: "change->mrt-filter-options#onChange",
+              "mrt-filter-options-target": "campaignChannel"
+            }
+          %>
+        </td>
+        <td>
+          <%= select_tag "media_plan_output[media_plan_output_rows_attributes][NEW_ROW][media_platform_id]",
+            options_for_select([]),
+            disabled: true,
+            include_blank: 'Platform',
+            class: 'form-select fs-8',
+            data: {
+              action: "change->mrt-filter-options#onChange",
+              "mrt-filter-options-target": "mediaPlatform"
+            }
+          %>
+        </td>
+        <td><%= media_plan.media_mix.media_output.campaign_objective.label %></td>
+        <td><%= media_plan.media_brief.campaign_initiative.label %></td>
+        <td>
+          <%= select_tag "media_plan_output[media_plan_output_rows_attributes][NEW_ROW][target_strategy_id]",
+            options_for_select([]),
+            disabled: true,
+            include_blank: 'Target Strategy',
+            class: 'form-select fs-8',
+            data: {
+              action: "change->mrt-filter-options#onChange",
+              "mrt-filter-options-target": "targetStrategy"
+            }
+          %>
+        </td>
+        <td>
+          <%= select_tag "media_plan_output[media_plan_output_rows_attributes][NEW_ROW][target_id]",
+            options_for_select([]),
+            disabled: true,
+            include_blank: 'Target',
+            class: 'form-select fs-8',
+            data: {
+              action: "change->mrt-filter-options#onChange",
+              "mrt-filter-options-target": "target"
+            }
+          %>
+        </td>
+        <td>
+          <div class="d-flex flex-column">
+            <% if media_plan.media_brief.all_demographics %>
+              <span>ALL</span>
+            <% else %>
+              <% media_plan.media_brief.demographic_ages_list.each do |age| %>
+                <div><%= age %></div>
+              <% end %>
+            <% end %>
+          </div>
+        </td>
+        <td><%= GeographicTarget.find(media_plan.media_brief.geographic_target).short_label %></td>
+        <td>
+          <%= select_tag "media_plan_output[media_plan_output_rows_attributes][NEW_ROW][ad_format_id]",
+            options_for_select([]),
+            disabled: true,
+            include_blank: 'Ad Format',
+            class: 'form-select fs-8',
+            data: {
+              action: "change->mrt-filter-options#onChange",
+              "mrt-filter-options-target": "adFormat"
+            }
+          %>
+        </td>
+        <td>-</td>
+        <td>-</td>
+        <%= render "shared/editable_cell", text_content: number_to_currency(0.00) do |data| %>
+          <%= text_field_tag "media_plan_output[media_plan_output_rows_attributes][NEW_ROW][amt]", 0.00, placeholder: "$0.00", class: "form-control text-center", form: form_id, data: data.merge(
+            action: "blur->editable-cell#hideField keyup->currency-mask#onChange",
+            controller: "currency-mask",
+            "currency-mask-precision": 2
+          ) %>
+        <% end %>
+        <td>
+          <div class="form-check d-flex justify-content-center pt-1">
+            <%= hidden_field_tag "media_plan_output[media_plan_output_rows_attributes][NEW_ROW][_destroy]", "false", id: "hidden_NEW_ROW" %>
+            <%= check_box_tag "media_plan_output[media_plan_output_rows_attributes][NEW_ROW][_destroy]", "true", false, class: "form-check-input", id: "remove_row_NEW_ROW", data: {
+              "media-plan-toggle-button-target": "checkbox",
+              action: "change->media-plan-toggle-button#toggleButtons"
+            } %>
+            <%= label_tag "remove_row_NEW_ROW", "Remove", class: "ms-2 form-check-label" %>
+          </div>
+        </td>
+      </tr>
+    </template>
+
+    <div class="d-flex justify-content-center mt-2 mb-5">
+      <%= button_tag "Add Row", type: "button", class: "btn btn-outline-primary px-3", data: {
+        action: "click->media-plan-row#add",
+      } %>
+    </div>
+  <% end %>
+
+  <%= render 'extra_info' %>
+
+  <div class="d-flex justify-content-end mt-5">
+    <% if media_plan.assigned_to_reviewer? %>
+      <div data-controller="media-plan-validation">
+        <% if policy(media_plan).update? %>
+          <!-- Save changes without transitioning the state -->
+          <%= submit_tag "Update", class: "btn btn-primary px-3 #{update_button_class(media_plan)}", form: form_id, data: {
+            action: "click->media-plan-update-state#submit media-plan-row:addRow@window->media-plan-toggle-button#showUpdateButton",
+            action_value: "update",
+            "media-plan-toggle-button-target": "updateButton"
+          } %>
+        <% end %>
+
+        <% if policy(media_plan).reject? %>
+          <%= render 'reject_modal' %>
+          <button
+            type="button"
+            class="btn btn-danger me-3 <%= approve_reject_button_class(media_plan) %>"
+            data-bs-toggle="modal"
+            data-bs-target="#rejectModal"
+            data-media-plan-toggle-button-target="rejectButton"
+          >
+            Reject
+          </button>
+        <% end %>
+
+        <% if policy(media_plan).approve? %>
+          <%= render 'approve_modal' %>
+          <button
+            type="button"
+            class="btn btn-success <%= approve_reject_button_class(media_plan) %>"
+            data-bs-toggle="modal"
+            data-bs-target="#approveModal"
+            data-media-plan-toggle-button-target="approveButton"
+          >
+            Approve
+          </button>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

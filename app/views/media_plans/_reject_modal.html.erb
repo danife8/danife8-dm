@@ -1,0 +1,28 @@
+<!-- Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true" data-media-plan-validation-target="rejectModal" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5 class="font-primary text-dark mb-4">
+          You are about to update status of <%= resource.title %> to Rejected. Please append comments regarding any modifications made; Otherwise, enter "N/A".
+        </h5>
+        <div class="form-floating">
+          <% if current_user.reviewer? %>
+            <%= text_area_tag "media_plan[reject_comment]", nil, class: 'form-control text-dark', style: 'min-height: 200px', data: { 'media-plan-validation-target': "rejectComment" }  %>
+            <%= label_tag "media_plan[reject_comment]", 'Comments', class: 'text-dark' %>
+          <% else %>
+            <%= text_area_tag "media_plan[user_reject_comment]", nil, class: 'form-control text-dark', style: 'min-height: 200px' %>
+            <%= label_tag "media_plan[user_reject_comment]", 'Comments', class: 'text-dark' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back</button>
+        <%= submit_tag "Submit", class: "btn btn-primary", data: {
+          action: "click->media-plan-update-state#submit",
+          action_value: 'reject'
+        }  %>
+      </div>
+    </div>
+  </div>
+</div>

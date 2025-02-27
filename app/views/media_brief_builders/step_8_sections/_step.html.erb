@@ -1,0 +1,11 @@
+<div class="container position-relative border rounded border-opacity-10 mb-2 pt-<%= field_separation %>">
+  <% if !defined?(hidden_edit) || !hidden_edit %>
+    <div class="badge rounded-0 rounded-bottom text-bg-primary position-absolute top-0 end-0 me-2">
+      <%= link_to [:edit, resource, {step: step, back_to_step: 8}], class: 'link-light text-decoration-none' do%>
+        <i class="bi bi-pencil-square"></i> EDIT STEP
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= render "media_brief_builders/step_8_sections/step_#{step}", field_separation: %>
+</div>

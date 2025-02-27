@@ -1,0 +1,60 @@
+<table class="table table-bordered text-center table-sm align-middle">
+  <tbody>
+    <tr>
+      <td class="col"><strong>Channel</strong></td>
+      <td class="col"><strong>Campaign Objetive</strong></td>
+      <td class="col"><strong>Ad Platform</strong></td>
+      <td class="col"><strong>Target Strategy</strong></td>
+      <td class="col"><strong>Budget</strong></td>
+    </tr>
+    <!-- Primary channels -->
+    <% engine.primary_channels.each_with_index do |channel, index| %>
+      <% channel.target_strategies.each_with_index do |strategy, index_strategy| %>
+        <tr>
+          <td><%= channel.campaign_channel.label %></td>
+          <td><%= media_output.campaign_objective.label %></td>
+          <td><%= strategy.ad_format.label %></td>
+          <td><%= strategy.target_strategy.label %></td>
+          <td><%= currency(strategy.amt) %></td>
+        </tr>
+      <% end %>
+
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    <% end %>
+
+    <% if engine.secondary_channels.any? %>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+
+      <!-- Secondary channels -->
+      <% engine.secondary_channels.each_with_index do |channel, index| %>
+        <% target_strategy = channel.target_strategies.first %>
+        <% if target_strategy.present? %>
+          <tr>
+            <td class="table-secondary"><%= channel.campaign_channel.label %></td>
+            <td><%= media_output.campaign_objective.label %></td>
+            <td><%= target_strategy.ad_format.label %></td>
+            <td class="table-secondary"><%= target_strategy.target_strategy.label %></td>
+            <td class="table-secondary"><%= currency(target_strategy.amt) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <tr>
+      <td colspan="4" class="text-center"><strong>Total</strong></td>
+      <td><strong><%= sum_amts(engine) %></strong></td>
+    </tr>
+  </tbody>
+</table>

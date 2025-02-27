@@ -1,0 +1,33 @@
+.sidebar {
+  font-family: $secondary-font;
+
+  &-icon-star-12 {
+    right: -290px;
+    top: -125px;
+  }
+
+  &-icon-star-6 {
+    left: -205px;
+    bottom: 0;
+    width: 433px;
+  }
+
+  .nav-link-sign-out {
+    @extend .fs-7;
+  }
+
+  @include media-breakpoint-down(xxl) {
+    .nav-link {
+      font-size: 1rem;
+    }
+
+    .nav-link-sign-out {
+      font-size: 0.875rem;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

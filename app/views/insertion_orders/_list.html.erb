@@ -1,0 +1,37 @@
+<table class="table table-striped">
+  <thead>
+    <th scope="col">Title</th>
+    <th scope="col">Client</th>
+    <th scope="col">Media Brief</th>
+    <th scope="col">Media Mix</th>
+    <th scope="col">Media Plan</th>
+    <th scope="col">Created Date</th>
+    <th scope="col">Options</th>
+  </thead>
+  <tbody>
+    <% collection.with_deleted.each do |io| %>
+      <tr data-id="<%= io.id %>">
+        <td><%= io.title %></td>
+        <td><%= io.client.name %></td>
+        <td><%= io.media_brief.title %></td>
+        <td><%= io.media_mix.title %></td>
+        <td><%= io.media_plan.title %></td>
+        <td><%= l io.created_at, format: :only_date %></td>
+        <td class="links-column">
+          <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><%= link_to "View", insertion_order_path(io), class: "dropdown-item" %></li>
+              <!-- TODO: The below link will be integrated in a future ticket -->
+              <li><%= link_to "Archive", root_path, method: :delete, data: {
+                turbo_confirm: "Are you sure you want to archive the Insertion Order?", turbo_method: :delete
+              }, class: "dropdown-item disabled" %></li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate collection %>

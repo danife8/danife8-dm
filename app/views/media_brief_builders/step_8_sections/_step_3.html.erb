@@ -1,0 +1,22 @@
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Industry Target:</strong>
+  </div>
+  <div>
+    <%= IndustryTarget.find(resource.industry_target).label %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Industry Category Descriptions:</strong>
+  </div>
+  <div>
+    <ol>
+      <li><%= resource.industry_description1 %></li>
+      <li><%= resource.industry_description2 %></li>
+      <li><%= resource.industry_description3 %></li>
+      <li><%= resource.industry_description4 %></li>
+      <li><%= resource.industry_description5 %></li>
+    </ol>
+  </div>
+</div>

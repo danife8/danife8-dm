@@ -1,0 +1,59 @@
+<div data-controller="auto-fill-title">
+  <div class="mb-3">
+    <%= form.label :client_id, class: "form-label" %>
+    <%= form.select(:client_id, options_for_select(policy_scope(Client).map { |client| [client.name, client.id, { data: { title: title_secuence(client) } }] }, resource.client_id), { include_blank: true }, { class: 'form-select', 'data-auto-fill-title-target': 'select' }) %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :title, class: 'form-label' %>
+    <%= form.text_field :title, autofocus: true, class: "form-control", value: resource.title.present? ? resource.title : generate_media_title(MediaBrief, current_user) %>
+  </div>
+</div>
+
+<div class="mb-3">
+  <%= form.label :campaign_objective_id, "What Is The Campaign Objective?", class: 'form-label' %>
+  <%= form.select(:campaign_objective_id, CampaignObjective.ordered.pluck(:label, :id), { include_blank: true }, { class: 'form-select', onchange: 'showCampaignInitiative.bind(this)()' }) %>
+</div>
+
+<div class="mb-3">
+  <%= form.label :campaign_initiative_id, "What is your objective type/action needed?", class: 'form-label' %>
+
+  <!-- Blank option -->
+  <%= form.select(:campaign_initiative_id, [], { },
+    {
+      class: "form-select select-campaign js-campaign-blank #{campaign_select_class(resource.campaign_objective, 'blank')}",
+      disabled: campaign_disabled?(resource.campaign_objective, 'blank')
+    })
+  %>
+
+  <% CampaignObjective.all.each do |campaign| %>
+    <%= form.select(
+      :campaign_initiative_id,
+      campaign.campaign_initiatives.ordered.pluck(:label, :id), { include_blank: true },
+      {
+        class: "form-select select-campaign js-campaign-#{campaign.id} #{campaign_select_class(resource.campaign_objective, campaign)}",
+        disabled: campaign_disabled?(resource.campaign_objective, campaign)
+      })
+    %>
+  <% end %>
+</div>
+
+<% content_for :back_url do %>
+  <%= media_briefs_path %>
+<% end %>
+
+<script type="text/javascript">
+  function showCampaignInitiative(){
+    let value = this.value || 'blank';
+
+    document.querySelectorAll('.select-campaign').forEach(function(select){
+      select.selectedIndex = 0;
+      select.classList.add('d-none');
+      select.disabled = true;
+    });
+
+    let activeSelect = document.querySelector(`.js-campaign-${value}`)
+    activeSelect.classList.remove('d-none');
+    activeSelect.disabled = false;
+  }
+</script>

@@ -1,0 +1,65 @@
+<div class="mb-3 row">
+  <div class="col">
+    <%= form.label :campaign_starts_on, "What is the start date of the campaign?", class: 'form-label fw-bold' %>
+  </div>
+  <div class="col">
+    <%= form.date_field :campaign_starts_on, min: Time.zone.now, autofocus: true, class: 'form-control', placeholder: 'MM/DD/YYYY' %>
+  </div>
+</div>
+
+<div class="mb-3 row">
+  <div class="col">
+    <%= form.label :campaign_ends_on, "What is the end date of the campaign?", class: 'form-label fw-bold' %>
+  </div>
+  <div class="col">
+    <%= form.date_field :campaign_ends_on, min: Time.zone.now, class: 'form-control', placeholder: 'MM/DD/YYYY' %>
+  </div>
+</div>
+
+<div class="mb-3">
+  <%= form.label :campaign_budget, "What is the budget?", class: 'form-label fw-bold' %>
+  <%= form.number_field :campaign_budget, class: 'form-control' %>
+</div>
+
+<div class="mb-3">
+  <%= form.label :destination_url, "What is the destination URL we will drive users to?", class: 'form-label fw-bold' %>
+  <%= form.url_field :destination_url, class: 'form-control', placeholder: "https://example.com", required: true,
+    pattern: "^(https?):\\/\\/([a-zA-Z0-9_\\-]{3,})\\.([a-zA-Z]{2,})(\\.[a-zA-Z]{2,})?$", data: {
+    action: "blur->media-brief-form-step-2#prependProtocolToURL",
+    "media-brief-form-step-2-target": "destinationField"
+  } %>
+  <small class="error js-error text-danger mt-1"></small>
+</div>
+
+<div class="mb-3">
+  <label class="form-label fw-bold">What are the official social media platforms?</label>
+  <div class="card">
+    <div class="card-body">
+      <% social_platform_options.each do |platform| %>
+        <div class="form-check">
+          <%= hidden_field_tag "#{form.object_name}[social_platforms][#{platform.key}]", "false", id: platform.key %>
+          <%= check_box_tag "#{form.object_name}[social_platforms][#{platform.key}]", "true", resource.social_platforms[platform.key], class: 'form-check-input' %>
+          <%= form.label "social_platforms_#{platform.key}", platform.label, class: 'form-check-label' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<div class="mb-3">
+  <label class="form-label fw-bold">Advertising Access Enabled</label>
+  <% social_platform_options.each do |platform| %>
+    <div class="row mb-3">
+      <div class="col">
+        <%= form.label "social_advertising_access_#{platform.key}", platform.label, class: 'form-label' %>
+      </div>
+      <div class="col">
+        <%= select_tag "#{form.object_name}[social_advertising_access][#{platform.key}]",
+                        options_for_select([['Yes', 'true'], ['No', 'false']], resource.social_advertising_access[platform.key] || 'false'),
+                        class: 'form-select'
+        %>
+      </div>
+    </div>
+  <% end %>
+</div>

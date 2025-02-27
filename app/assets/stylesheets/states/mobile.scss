@@ -1,0 +1,25 @@
+.is-mobile-active {
+  /* Portrait mode: show warning and hide content */
+  @media screen and (orientation: portrait) {
+    overflow: hidden;
+
+    .landscape-warning {
+      display: flex;
+    }
+    .content {
+      display: none;
+    }
+  }
+
+  /* Landscape mode: hide warning and show content */
+  @media screen and (orientation: landscape) {
+    overflow: auto;
+
+    .landscape-warning {
+      display: none;
+    }
+    .content {
+      display: block;
+    }
+  }
+}

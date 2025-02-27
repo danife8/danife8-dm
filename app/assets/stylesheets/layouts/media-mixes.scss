@@ -1,0 +1,9 @@
+.media-mixes-page {
+  .dropdown-toggle.disabled::after {
+    color: var(--bs-gray-500);
+  }
+
+  .final-output {
+    padding-bottom: 30px;
+  }
+}

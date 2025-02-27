@@ -1,0 +1,24 @@
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Available Creative Assets:</strong>
+  </div>
+  <div>
+    <ul>
+      <% enum_truly(resource.creative_assets).each do |key, value| %>
+        <li><%= CampaignChannel.find_by(value: key).label %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Excluded Channels:</strong>
+  </div>
+  <div>
+    <ul>
+      <% enum_truly(resource.campaign_channels).each do |key, value| %>
+        <li><%= CampaignChannel.find_by(value: key).label %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

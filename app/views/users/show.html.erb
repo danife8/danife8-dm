@@ -1,0 +1,58 @@
+<%= render "shared/page_heading", title: "User Details"%>
+
+<div class="d-flex justify-content-end mb-5">
+  <%= link_to "Edit", edit_user_path(@user), class: 'fs-7' %>
+  <span class="fs-7 ms-4 me-4">|</span>
+  <%= link_to "Back to users", users_path, class: 'fs-7' %>
+</div>
+
+<div id="<%= dom_id @user %>">
+  <div class="mb-3">
+    <%= label_tag "status", nil, class: "form-label" %>
+    <%= text_field_tag :status, @user.aasm_state.titleize, class: "form-control", readonly: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= label_tag "role", nil, class: "form-label" %>
+    <%= text_field_tag :role, @user.user_role_label, class: "form-control", readonly: true %>
+  </div>
+
+  <% if @user.client_user? %>
+    <div class="mb-3">
+      <%= label_tag "client", nil, class: "form-label" %>
+      <%= text_field_tag :client, @user.client.contact_full_name, class: "form-control", readonly: true %>
+    </div>
+  <% end %>
+
+  <% if current_user.super_admin? %>
+    <div class="mb-3">
+      <%= label_tag "agency", nil, class: "form-label" %>
+      <%= text_field_tag :agency, @user.agency_name, class: "form-control", readonly: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= label_tag "super_admin", nil, class: "form-label" %>
+      <%= text_field_tag :super_admin, boolean_to_text(@user.super_admin), class: "form-control", readonly: true %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= label_tag "last_login", nil, class: "form-label" %>
+    <%= text_field_tag :last_login, @user.last_sign_in_at&.to_date, class: "form-control", readonly: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= label_tag "full_name", nil, class: "form-label" %>
+    <%= text_field_tag :full_name, @user.full_name, class: "form-control", readonly: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= label_tag "email", nil, class: "form-label" %>
+    <%= text_field_tag :email, @user.email, class: "form-control", readonly: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= label_tag "phone_number", nil, class: "form-label" %>
+    <%= text_field_tag :phone_number, @user.phone_number, class: "form-control", readonly: true %>
+  </div>
+</div>

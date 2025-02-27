@@ -1,0 +1,45 @@
+<section class="media-mixes-page">
+  <%= render "shared/page_heading", title: "Media Mixes", class_name: "mb-5" do %>
+    <div class="d-flex">
+      <%= render "shared/filterable", get_status: ->(status) { media_mix_status(status) } %>
+      <%= link_to "New Media Mix", new_media_mix_path, class: "btn btn-primary ms-3" %>
+    </div>
+  <% end %>
+
+  <table id="clients" class="table table-striped">
+    <thead>
+      <th scope="col">Media Mix Title</th>
+      <th scope="col">Client</th>
+      <th scope="col">Media Brief Title</th>
+      <th scope="col">Created Date</th>
+      <th scope="col">Status</th>
+      <th scope="col">Options</th>
+    </thead>
+    <tbody>
+      <% collection.with_deleted.each do |media_mix| %>
+        <tr data-id="<%= media_mix.id %>">
+          <td><%= media_mix.title %></td>
+          <td><%= media_mix.client.name %></td>
+          <td><%= media_mix.media_brief.title %></td>
+          <td><%= l media_mix.created_at, format: :only_date %></td>
+          <td><%= media_mix_status(media_mix.aasm_state, media_mix.deleted?) %></td>
+          <td class="links-column">
+            <div class="dropdown">
+              <button class="btn btn-light dropdown-toggle <%= "disabled" if media_mix.deleted? %>" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><%= link_to "Show", media_mix_path(media_mix), class: "dropdown-item" %></li>
+                <li><%= link_to "Details and History", edit_media_mix_path(media_mix), class: "dropdown-item #{'disabled' unless policy(media_mix).edit? }" %></li>
+                <li><%= link_to "Download PPT", download_ppt_media_mix_path(media_mix), class: "dropdown-item #{'disabled' unless policy(media_mix).download_ppt? }", data: { turbolinks: false }, onclick: "this.onclick = function(e) { e.preventDefault(); };" %></li>
+                <li><%= link_to "Archive", media_mix_path(media_mix), method: :delete, data: {
+                  turbo_confirm: "Are you sure you want to archive the Media Mix?", turbo_method: :delete
+                }, class: "dropdown-item #{policy(media_mix).destroy? ? 'text-danger' : 'disabled'}" %></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate collection %>
+</section>

@@ -1,0 +1,53 @@
+.font-primary {
+  font-family: $primary-font;
+}
+
+.font-secondary {
+  font-family: $secondary-font;
+}
+
+.icon-bold {
+  // This adds shadows in all directions to make the icon appear bolder
+  text-shadow:
+    1px 0 currentColor,
+    0 1px currentColor,
+    -1px 0 currentColor,
+    0 -1px currentColor;
+}
+
+// This goes between bootstrap classes fs-5 (1.25rem - 20px) and fs-6 (1rem - 16px)
+.fs-5-1 {
+  font-size: 1.125rem; // 18px
+}
+
+.fs-7 {
+  font-size: 0.875rem; // 14px
+}
+
+.fs-8 {
+  font-size: 0.75rem; // 12px
+}
+
+.link-color-secondary {
+  color: $light-blue;
+
+  &:hover {
+    color: rgba($light-blue, 0.8);
+  }
+}
+
+.text-color-secondary {
+  color: $light-blue;
+}
+
+.text-color-dark-blue {
+  color: $dark-blue;
+}
+
+.bg-dark-blue {
+  background: $dark-blue;
+}
+
+.bg-darker-blue {
+  background: $darker-blue;
+}

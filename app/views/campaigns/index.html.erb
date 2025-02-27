@@ -1,0 +1,9 @@
+<section class="d-flex flex-column h-100">
+  <%= render "shared/page_heading", title: "Documents", class_name: "mb-5" do %>
+    <div class="d-flex">
+      <%= render "shared/filterable" %>
+    </div>
+  <% end %>
+
+  <%= render "campaigns_list", collection: %>
+</section>

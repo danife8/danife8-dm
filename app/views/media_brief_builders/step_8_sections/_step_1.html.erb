@@ -1,0 +1,32 @@
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Media brief title:</strong>
+  </div>
+  <div>
+    <%= resource.title %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Client:</strong>
+  </div>
+  <div>
+    <%= resource.client.name %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Campaign Objective:</strong>
+  </div>
+  <div>
+    <%= resource.campaign_objective.label %>
+  </div>
+</div>
+<div class="d-flex mb-<%= field_separation %>">
+  <div class="me-2">
+    <strong>Campaign Initiative:</strong>
+  </div>
+  <div>
+    <%= resource.campaign_initiative.label %>
+  </div>
+</div>

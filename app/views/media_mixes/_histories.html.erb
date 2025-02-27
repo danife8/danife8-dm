@@ -1,0 +1,36 @@
+<h2 class="mb-3">Preview versions</h2>
+
+<table class="table w-100">
+  <thead>
+    <tr>
+      <th>Media Mix</th>
+      <th>Client</th>
+      <th>Media Brief</th>
+      <th>User Details</th>
+      <th>State</th>
+      <th>Engine results version</th>
+      <th>Created at</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% resource.versions.reverse.each do |history| %>
+
+      <% media_mix = history.reify %>
+      <% if media_mix %>
+        <tr>
+          <td><%= media_mix.title %></td>
+          <td><%= media_mix.client.name %></td>
+          <td><%= media_mix.media_brief.title %></td>
+          <td><%= User.find(history.whodunnit).full_name %></td>
+          <td><%= media_mix.aasm_state %></td>
+          <td><%= media_mix.media_output_version %></td>
+          <td><%= l history.created_at, format: :only_date  %></td>
+          <td>
+            <%= button_to 'Restore version', restore_version_media_mix_path(resource, history.id), method: :post, data: { confirm: 'Are you sure you want to restore the version of the Media Mix?' }, class: 'btn btn-primary mb-3' %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

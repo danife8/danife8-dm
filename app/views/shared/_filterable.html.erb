@@ -1,0 +1,49 @@
+<%= form_tag form_path, method: :get, class: "d-flex" do %>
+  <!--Filter Dropdown-->
+  <div class="dropdown">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+      Filter
+    </button>
+    <div class="dropdown-menu filterable-dropdown-menu p-4">
+      <div class="mb-3">
+        <h6 class="fw-bolder mb-2 font-primary">Clients</h6>
+        <% clients.pluck(:name, :id).each do |name, id| %>
+          <div class="form-check">
+            <%= hidden_field_tag "filter[client_ids][#{id}]", "false", id: "hidden_#{id}" %>
+            <%= check_box_tag "filter[client_ids][#{id}]", "true", params[:filter]&.dig(:client_ids)&.fetch(id.to_s, nil) == "true", class: "form-check-input", id: "filter_client_ids_#{id}" %>
+            <%= label_tag "filter_client_ids_#{id}]", name, class: "form-check-label" %>
+          </div>
+        <% end %>
+      </div>
+      <% if states.any? %>
+        <div class="mb-3">
+          <h6 class="fw-bolder mb-2 font-primary">Status</h6>
+          <% states.each do |state| %>
+            <div class="form-check">
+              <%= hidden_field_tag "filter[aasm_states][#{state}]", "false", id: "hidden_#{state}" %>
+              <%= check_box_tag "filter[aasm_states][#{state}]", "true", params[:filter]&.dig(:aasm_states)&.fetch(state, nil) == "true", class: "form-check-input", id: "filter_aasm_states_#{state}" %>
+              <%= label_tag "filter_aasm_states_#{state}]", get_status.call(state), class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <%= submit_tag "Filter", class: "btn btn-primary w-100" %>
+    </div>
+  </div>
+  <!--Sort Dropdown-->
+  <div class="dropdown ms-3">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+      Sort
+    </button>
+    <div class="dropdown-menu filterable-dropdown-menu p-4">
+      <%= link_to "Newest to Oldest", filter_by("created_at.desc"), class: "mb-1 btn text-color-dark-blue w-100 text-start #{filter_class("created_at.desc")}" %>
+      <%= link_to "Oldest to Newest", filter_by("created_at.asc"), class: "mb-1 btn text-color-dark-blue w-100 text-start #{filter_class("created_at.asc")}" %>
+      <%= link_to "A to Z", filter_by("title.asc"), class: "mb-1 btn text-color-dark-blue w-100 text-start #{filter_class("title.asc")}" %>
+      <%= link_to "Z to A", filter_by("title.desc"), class: "mb-1 btn text-color-dark-blue w-100 text-start #{filter_class("title.desc")}" %>
+    </div>
+  </div>
+  <div class="d-flex ms-3 search-bar">
+    <%= text_field_tag "filter[q]", params[:filter]&.fetch(:q, nil), placeholder: "Search", class: "form-control search-bar-input" %>
+    <%= submit_tag "Go", class: "btn btn-primary search-bar-button" %>
+  </div>
+<% end %>

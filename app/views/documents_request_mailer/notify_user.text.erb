@@ -1,0 +1,13 @@
+Dear <%= @user.full_name %>,
+
+We're reaching out because we need your assistance in gathering some important information.
+
+To ensure we have everything we need, we've created a simple checklist for you to complete. Your input is crucial and will only take a few minutes of your time.
+
+Please click the link below to view and manage your checklist:
+<%= documents_request_url(@documents_request) %>
+
+Your prompt response will help us serve you better and ensure everything is in order. If you have any questions or need assistance, please don't hesitate to reach out.
+
+Best Regards,
+<%= @documents_request.sender.full_name %>

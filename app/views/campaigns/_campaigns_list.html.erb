@@ -1,0 +1,20 @@
+<table class="table table-striped">
+  <thead>
+    <th scope="col">Campaign</th>
+    <th scope="col">Client</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% collection.each do |campaign| %>
+      <tr data-id="<%= campaign.insertion_order.id %>">
+        <td><%= campaign.insertion_order.title %></td>
+        <td><%= campaign.client.name %></td>
+        <td class="text-center">
+          <%= link_to "View Documents", campaign_path(campaign), class: "btn btn-primary" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate collection %>

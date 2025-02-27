@@ -1,0 +1,56 @@
+<section class="media-mixes-page">
+  <%= render "shared/page_heading", title: "Media Mix", class_name: "mb-5" %>
+
+  <%= render "readonly_fields", media_mix: resource %>
+
+  <% if resource.has_media_output? %>
+    <div data-controller="media-mix-cta">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <% if policy(MediaPlan).create? %>
+          <%= link_to "Generate Media Plan", new_media_plan_path, class: "btn btn-primary me-md-2" %>
+        <% end %>
+
+        <% if policy(resource).show_details? %>
+          <button class="btn btn-primary me-md-2" data-media-mix-cta-target="showDetailsBtn" type="button"></button>
+          <% if policy(resource).edit? && policy(MediaOutputChannelStrategy).edit? %>
+            <%= link_to "Edit Final Output", edit_final_output_path(resource), class: "btn btn-primary" %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="pt-4">
+        <div class="final-output" data-media-mix-cta-target="finalOutput">
+          <% engine_step = resource.media_output.channel_strategies.last %>
+          <%= render "table_preview", title: engine_step.title, engine: engine_step, media_output: resource.media_output %>
+        </div>
+
+        <% if policy(resource).show_details? %>
+          <div class="slider-table position-relative d-none" data-controller="slider-table" data-media-mix-cta-target="sliderDetails">
+            <div class="swiper" data-slider-table-target="sliderContainer">
+              <div class="swiper-wrapper">
+                <!-- Slides -->
+                <% resource.media_output.channel_strategies.each do |engine_step| %>
+                  <div class="swiper-slide">
+                    <%= render "table_details", title: engine_step.title, engine: engine_step, media_output: resource.media_output %>
+                  </div>
+                <% end %>
+              </div>
+              <div class="swiper-pagination" data-slider-table-target="paginationContainer"></div>
+            </div>
+            <div class="swiper-button-prev" data-slider-table-target="prevButton"></div>
+            <div class="swiper-button-next"  data-slider-table-target="nextButton"></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <!-- Container for the message -->
+    <div class="d-flex justify-content-center align-items-center p-5">
+      <!-- Alert message -->
+      <div class="alert alert-warning text-center" role="alert">
+        No data available.
+      </div>
+    </div>
+  <% end %>
+  </div>
+</section>

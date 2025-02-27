@@ -1,0 +1,107 @@
+<div class="position-absolute overflow-hidden h-100 w-100 top-0 start-0 d-flex flex-column justify-content-between sidebar">
+  <%= image_tag("icon-star-12.svg", class: "sidebar-icon-star-12 position-absolute") %>
+
+  <nav class="nav flex-column position-relative z-1 ps-5 pt-3">
+    <%= link_to root_path, class: "nav-link py-1 py-xxl-2" do %>
+      <%= image_tag("logo-2x.png", class: "logo mb-4") %>
+    <% end %>
+
+    <% if user_signed_in? %>
+      <%= link_to "Dashboard", root_path, class: "nav-link py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(root_path)}" %>
+
+      <% if policy(Agency).index? %>
+        <%= link_to "Agencies", agencies_path, class: "nav-link py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(agencies_path)}" %>
+      <% end %>
+
+      <% if policy(User).index? %>
+        <%= link_to "Users", users_path, class: "nav-link py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(users_path)}" %>
+      <% end %>
+
+      <% if policy(Client).index? %>
+        <%= link_to "Clients", clients_path, class: "nav-link py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(clients_path)}" %>
+      <% end %>
+
+      <% if policy(MediaBrief).index? %>
+        <%= link_to "Media Briefs", media_briefs_path, class: "nav-link py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(media_briefs_path)}" %>
+      <% end %>
+
+      <% if policy(MediaMix).index? %>
+        <%= link_to "Media Mixes", media_mixes_path, class: "nav-link py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(media_mixes_path)}" %>
+      <% end %>
+
+      <!-- Media Plan Section -->
+      <div class="nav-item dropdown" data-controller="media-plan-dropdown">
+        <a class="nav-link py-1 py-xxl-2 dropdown-toggle media-plan-text" href="#" role="button" id="mediaPlanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          Media Plan
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mediaPlanDropdown">
+          <% if policy(MediaPlan).index? %>
+            <li><%= link_to "List View", media_plans_path, class: "dropdown-item #{"is-sidebar-link-active" if current_page?(media_plans_path)}" %></li>
+          <% end %>
+          <% if policy(MediaPlan).in_review? %>
+            <li><%= link_to "In Review", in_review_media_plans_path, class: "dropdown-item #{"is-sidebar-link-active" if current_page?(in_review_media_plans_path)}" %></li>
+          <% end %>
+          <% if policy(MediaPlan).in_queue? %>
+            <li><%= link_to "Queue", in_queue_media_plans_path, class: "dropdown-item" %></li>
+          <% end %>
+          <% if policy(MediaPlan).my_reviews? %>
+            <li><%= link_to "My reviews", my_reviews_media_plans_path, class: "dropdown-item" %></li>
+          <% end %>
+          <% if policy(MediaPlan).approvals? %>
+            <li><%= link_to "Approvals", approvals_media_plans_path, class: "dropdown-item" %></li>
+          <% end %>
+        </ul>
+      </div>
+      <!-- End Media Plan Section -->
+
+      <% if policy(InsertionOrder).index? %>
+        <%= link_to "Insertion Orders (IO)", insertion_orders_path, class: "nav-link py-1 py-xxl-2" %>
+      <% end %>
+
+      <% if policy(Campaign).index? %>
+        <%= link_to "Documents", campaigns_path, class: "nav-link py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(campaigns_path)}" %>
+      <% end %>
+
+      <% if policy(Reporting).index? %>
+        <%= link_to "Reporting", reporting_index_path, class: "nav-link py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(reporting_index_path)}" %>
+      <% end %>
+
+      <% if policy(ReportingDashboard).index? %>
+        <%= link_to "Dashboards", reporting_dashboards_path, class: "nav-link ms-3 py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(reporting_dashboards_path)}" %>
+      <% end %>
+
+    <% else %>
+      <%= link_to "Sign In", new_user_session_path, class: "nav-link py-1 py-xxl-2 #{"is-sidebar-link-active" if current_page?(new_user_session_path)}" %>
+    <% end %>
+  </nav>
+
+  <% if user_signed_in? %>
+    <nav class="nav flex-column position-relative p-5 pt-0">
+      <%= image_tag("icon-star-6.svg", class: "sidebar-icon-star-6 position-absolute") %>
+
+      <div class="position-relative">
+        <% if policy(:sidebar).settings? %>
+          <%= link_to admin_console_path, class: "nav-link py-1 py-xxl-2 mb-1 mb-xxl-2 sidebar-icon #{"is-sidebar-icon-active" if current_page?(admin_console_path)}" do %>
+            <%= render "shared/icon-settings" %>
+          <% end %>
+        <% end %>
+
+        <!-- This link will be integrated/updated in a future ticket -->
+        <%= link_to root_path, class: "nav-link py-1 py-xxl-2 mb-1 mb-xxl-2 sidebar-icon" do %>
+          <%= render "shared/icon-my-profile" %>
+        <% end %>
+
+        <!-- This link will be integrated/updated in a future ticket -->
+        <%= link_to root_path, class: "nav-link py-1 py-xxl-2 mb-1 mb-xxl-2 sidebar-icon" do %>
+          <%= render "shared/icon-alert" %>
+        <% end %>
+
+        <%= link_to edit_user_registration_path, class: "nav-link py-1 py-xxl-2 mb-1 mb-xxl-2 sidebar-icon #{"is-sidebar-icon-active" if current_page?(edit_user_registration_path)}" do %>
+          <%= render "shared/icon-edit-profile" %>
+        <% end %>
+
+        <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-link nav-link py-1 py-xxl-2 nav-link-sign-out" %>
+      </div>
+    </nav>
+  <% end %>
+</div>

@@ -1,0 +1,21 @@
+// Override bootstrap buttons
+.base-primary-btn {
+  &:hover {
+    --bs-btn-hover-bg: #{$mid-blue};
+    --bs-btn-hover-color: #{$white};
+    --bs-btn-hover-border-color: transparent;
+  }
+}
+
+.btn {
+  letter-spacing: normal;
+}
+
+.btn-primary {
+  --bs-btn-color: #{$dark-blue};
+  @extend .base-primary-btn;
+}
+
+.btn-outline-primary {
+  @extend .base-primary-btn;
+}

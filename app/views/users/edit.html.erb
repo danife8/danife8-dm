@@ -1,0 +1,10 @@
+<%= render "shared/page_heading", title: "Edit User"%>
+
+<div class="d-flex justify-content-end mb-5">
+  <%= link_to "Show", @user, class: 'fs-7' %>
+  <span class="fs-7 ms-4 me-4">|</span>
+  <%= link_to "Back to users", users_path, class: 'fs-7' %>
+</div>
+
+<%= render "form", user: @user %>
+

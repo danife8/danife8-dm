@@ -1,0 +1,61 @@
+<div class="overflow-auto">
+  <table class="table table-bordered text-center table-sm align-middle">
+    <tbody>
+      <tr>
+        <td class="col"><strong>Client</strong></td>
+        <td class="col"><strong>Campaign</strong></td>
+        <td class="col"><strong>Flight Dates</strong></td>
+        <td class="col"><strong>Channel</strong></td>
+        <td class="col"><strong>Ad Platform</strong></td>
+        <td class="col"><strong>Campaign Goal</strong></td>
+        <td class="col"><strong>Campaign Action</strong></td>
+        <td class="col"><strong>Targeting Strategy</strong></td>
+        <td class="col"><strong>Target</strong></td>
+        <td class="col"><strong class="d-flex" style="width: 70px;">Age Range</strong></td>
+        <td class="col"><strong>Geographic Target</strong></td>
+        <td class="col"><strong>Primary Ad Format</strong></td>
+        <td class="col"><strong>ESTD CPM</strong></td>
+        <td class="col"><strong>ESTD Impr</strong></td>
+        <td class="col"><strong>Total Budget</strong></td>
+      </tr>
+      <% resource.media_plan_output.media_plan_output_rows.each_with_index do |row, row_index| %>
+        <tr>
+          <td><%= resource.client.name %></td>
+          <td><%= media_brief.title %></td>
+          <td><%= media_brief.campaign_starts_on.strftime('%m/%d/%Y') %> - <%= media_brief.campaign_ends_on.strftime('%m/%d/%Y') %></td>
+          <td><%= row.campaign_channel.label %></td>
+          <td><%= row.media_platform.label %></td>
+          <td><%= media_output.campaign_objective.label %></td>
+          <td><%= media_brief.campaign_initiative.label %></td>
+          <td><%= row.target_strategy.label %></td>
+          <td><%= row.target.label %></td>
+          <td>
+            <div class="d-flex flex-column">
+              <% if media_brief.all_demographics %>
+                <span>ALL</span>
+              <% else %>
+                <% media_brief.demographic_ages_list.each do |age| %>
+                  <div><%= age %></div>
+                <% end %>
+              <% end %>
+            </div>
+          </td>
+          <td>
+            <%= GeographicTarget.find(media_brief.geographic_target).short_label %>
+          </td>
+          <td><%= row.ad_format.label %></td>
+          <td><%= format_cpm(row.master_relationship.cpm, row.target_strategy) %></td>
+          <td><%= format_impr(row.impressions, row.target_strategy) %></td>
+          <td><%= currency(row.amt) %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="13" class="text-center"><strong>Total</strong></td>
+        <td><strong><%= sum_imprs(resource) %></strong></td>
+        <td><strong><%= sum_media_plan_amts(resource) %></strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<%= render 'extra_info' %>

@@ -1,0 +1,7 @@
+.card {
+  .form-check {
+    // Since card is white, we need to update checkbox styling
+    --bs-border-color: #{$dark-blue};
+    color: $dark-blue;
+  }
+}

@@ -1,0 +1,40 @@
+<table id="clients" class="table table-striped">
+  <thead>
+    <th scope="col">Title</th>
+    <th scope="col">Client</th>
+    <th scope="col">Media Brief</th>
+    <th scope="col">Media Mix</th>
+    <th scope="col">Created Date</th>
+    <th scope="col">Status</th>
+    <th scope="col">Options</th>
+  </thead>
+  <tbody>
+    <% collection.each do |media_plan| %>
+      <tr data-id="<%= media_plan.id %>">
+        <td><%= media_plan.title %></td>
+        <td><%= media_plan.client.name %></td>
+        <td><%= media_plan.media_brief.title %></td>
+        <td><%= media_plan.media_mix.title %></td>
+        <td><%= l media_plan.created_at, format: :only_date %></td>
+        <td><%= media_plan_modified_status(media_plan) %><%= media_plan_status(media_plan.aasm_state, media_plan.deleted?) %></td>
+        <td class="links-column">
+          <%= render 'assign_modal', media_plan: %>
+
+          <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><%= link_to "Review", edit_media_plan_path(media_plan), class: "dropdown-item" %></li>
+              <li>
+                <div class="dropdown-item" data-bs-toggle="modal" data-bs-target="#assignModal<%= media_plan.id %>">
+                  Reassign
+                </div>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate collection %>

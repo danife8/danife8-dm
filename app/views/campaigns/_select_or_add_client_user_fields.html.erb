@@ -1,0 +1,51 @@
+<div>
+  <h5>Add Client User</h5>
+  <%= form.label :first_name, class: "mt-3 form-label" %>
+  <%= form.text_field :first_name,
+    autofocus: true,
+    class: "form-control",
+    required: true,
+    minlength: 2,
+    data: { action: "input->#{js_controller_name}#validateInputs", "#{js_controller_name_target}": "input" }
+  %>
+  <%= form.label :last_name, class: "mt-3 form-label" %>
+  <%= form.text_field :last_name,
+    autofocus: true,
+    class: "form-control",
+    required: true,
+    minlength: 2,
+    data: { action: "input->#{js_controller_name}#validateInputs", "#{js_controller_name_target}": "input" }
+  %>
+  <%= form.label :phone_number, class: "mt-3 form-label" %>
+  <%= form.telephone_field :phone_number,
+    class: "form-control",
+    maxlength: 10,
+    pattern: "[0-9]{10}",
+    title: "Enter a 10-digit Phone Number",
+    required: true,
+    data: { action: "input->#{js_controller_name}#validateInputs", "#{js_controller_name_target}": "input" }
+  %>
+  <%= form.label :email, class: "mt-3 form-label" %>
+  <%= form.text_field :email,
+    class: "form-control",
+    pattern: "^([a-zA-Z0-9_\\-\\+\\.]+){3,}@([a-zA-Z0-9\\-\\.]{3,})\\.([a-zA-Z]{2,})(\.[a-zA-Z]{2,})?$",
+    title: "Please follow the example formatting: exampledomain.com",
+    required: true,
+    data: { action: "input->#{js_controller_name}#validateInputs", "#{js_controller_name_target}": "input" }
+  %>
+  <%= form.label :client_id, class: "mt-3 form-label" %>
+  <%= form.select :client_id,
+    options_for_select(client_options, current_user.client_id),
+    { required: true, include_blank: true },
+    { class: "form-select", data: { action: "change->#{js_controller_name}#validateInputs", "#{js_controller_name_target}": "input" } }
+  %>
+</div>
+<div class="mt-4">
+  <h5>Select Existing User</h5>
+  <%= form.label :user_id, class: "form-label" %>
+  <%= form.select :user_id,
+    options_for_select(user_options, nil),
+    { include_blank: true },
+    { class: "form-select", data: { action: "change->#{js_controller_name}#disableInputFields", "#{js_controller_name_target}": "userSelect" } }
+  %>
+</div>

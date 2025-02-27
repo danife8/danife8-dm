@@ -1,0 +1,9 @@
+<section>
+  <%= render "shared/page_heading", title: "Media Plan - Approvals", class_name: "mb-5" do %>
+    <div class="d-flex">
+      <%= render "shared/filterable", get_status: ->(status) { media_plan_status(status) } %>
+    </div>
+  <% end %>
+
+  <%= render "approval_list", collection: collection %>
+</section>

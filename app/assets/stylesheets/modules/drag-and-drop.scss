@@ -1,0 +1,16 @@
+.drag-drop-area {
+  background-color: #f8f9fa;
+  border-style: dashed;
+  border-width: 3px;
+  min-height: 10em;
+  border-color: $secondary;
+  text-align: center;
+  i {
+    font-size: 3em;
+    color: $secondary;
+  }
+  p {
+    font-weight: 500;
+    color: $secondary;
+  }
+}

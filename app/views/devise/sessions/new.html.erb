@@ -1,0 +1,41 @@
+<div
+  class="position-absolute overflow-hidden h-100 w-100 top-0 start-0 d-flex justify-content-center align-items-center bg-gradient login"
+>
+  <%= image_tag("icon-robot-head-white.svg", class: "login-icon-robot position-absolute") %>
+  <%= image_tag("icon-star-12.svg", class: "login-icon-star-12 position-absolute") %>
+  <%= image_tag("icon-star-6.svg", class: "login-icon-star-6 position-absolute") %>
+  <%= image_tag("icon-4-in-1.svg", class: "login-icon-4-in-1 position-absolute") %>
+
+  <div class="position-relative w-100 login-inner-container">
+    <%= image_tag("logo-2x.png", class: "logo logo-large mb-5") %>
+
+    <p class="h1 mb-5 fs-3">Log in</p>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, class: "form-label" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="form-check mb-2">
+          <%= f.check_box :remember_me, class: "form-check-input" %>
+          <%= f.label :remember_me, class: "form-check-label" %>
+        </div>
+      <% end %>
+
+      <div class="mb-4 pt-4">
+        <%= f.submit "Log in", class: "btn btn-primary ps-5 pe-5" %>
+      </div>
+    <% end %>
+
+    <hr class="login-separator">
+
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="row mb-<%= field_separation %>">
+  <div class="col-12">
+    <strong>How do you want the media delivered, geographically?</strong>
+  </div>
+  <div class="col-12 ps-5">
+    <ul>
+      <% enum_truly(resource.geographic_targets).each do |key, value| %>
+        <li>
+          <strong><%= GeographicTarget.find(key).label %></strong>
+          <ul>
+            <% if geographic_by_type(resource, key).present? %>
+              <% geographic_by_type(resource, key).each do |text|%>
+                <li><%= text %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<header class="border-bottom pb-2 mb-2 <%= '' + class_name if local_assigns[:class_name].present? %>">
+  <% if local_assigns[:section_title].present? %>
+    <h6 class="text-primary mb-1"><%= section_title %></h6>
+  <% end %>
+  <div class="d-flex justify-content-between align-items-end position-relative">
+    <h1 class="m-0 h2"><%= title %></h1>
+    <% if block_given? %>
+      <%= yield %>
+    <% end %>
+  </div>
+</header>

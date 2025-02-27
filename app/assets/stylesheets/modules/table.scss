@@ -1,0 +1,17 @@
+// Override bootstrap table styles
+.table {
+  // Target th & td
+  > :not(caption) > * > * {
+    @extend .fs-5-1;
+  }
+
+  &-small {
+    > :not(caption) > * > * {
+      @extend .fs-8;
+    }
+  }
+
+  tbody tr {
+    vertical-align: baseline;
+  }
+}

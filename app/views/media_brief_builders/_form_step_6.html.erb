@@ -1,0 +1,44 @@
+<div class="mb-3">
+  <%= form.label :previous_campaign_data, "Do you have any current/previous digital campaign results to share?", class: 'form-label' %>
+  <%= form.select :previous_campaign_data, enum_model_select_options(MediaBriefPreviousData), { include_blank: true }, { class: 'form-select' } %>
+</div>
+
+<div class="mb-3">
+  <%= form.label :previous_customer_data, "Is there any current/previous customer data (CRM) available to use?", class: 'form-label' %>
+  <%= form.select :previous_customer_data, enum_model_select_options(MediaBriefPreviousData), { include_blank: true }, { class: 'form-select' } %>
+</div>
+
+<div class="mb-3">
+  <%= form.label :tracking_pixel_access, "Is there access to place tracking & reporting pixels?", class: 'form-label' %>
+  <%= form.select :tracking_pixel_access, boolean_select_options, {}, { class: 'form-select' } %>
+</div>
+
+<div class="mb-3">
+  <%= form.label :tracking_capability, "What are the current tracking capabilities?", class: 'form-label' %>
+  <%= form.select :tracking_capability, enum_model_select_options(TrackingCapability), { include_blank: true }, { class: 'form-select', onchange: 'toggleOtherTrackingCapability.bind(this)()' } %>
+</div>
+
+<div class="mb-3">
+  <%= form.label :other_tracking_capability, "Other", class: 'form-label' %>
+  <%= form.text_field :other_tracking_capability, class: 'form-control' %>
+  <p class="text-muted">Tell us what you're using for tracking and reporting</p>
+</div>
+
+<script type="text/javascript">
+
+  function toggleOtherTrackingCapability() {
+    window.txObj.disabled = this.value != 'other';
+    if (window.txObj.disabled) window.txObj.value = '';
+  };
+
+  // Set Disable on refresh
+  <% if resource.is_a?(MediaBriefBuilder) %>
+    cmbObj = document.getElementById('media_brief_builder_tracking_capability');
+    txObj = document.getElementById('media_brief_builder_other_tracking_capability');
+  <% else %>
+    cmbObj = document.getElementById('media_brief_tracking_capability');
+    txObj = document.getElementById('media_brief_other_tracking_capability');
+  <% end %>
+
+  txObj.disabled = cmbObj.value != "other";
+</script>

@@ -1,0 +1,100 @@
+<div class="overflow-auto">
+  <table class="table table-bordered text-center table-sm align-middle">
+    <thead>
+      <tr>
+        <td class="col"><strong>Client</strong></td>
+        <td class="col"><strong>Campaign</strong></td>
+        <td class="col"><strong>Flight Dates</strong></td>
+        <td class="col"><strong>Channel</strong></td>
+        <td class="col"><strong>Ad Platform</strong></td>
+        <td class="col"><strong>Campaign Goal</strong></td>
+        <td class="col"><strong>Campaign Action</strong></td>
+        <td class="col"><strong>Targeting Strategy</strong></td>
+        <td class="col"><strong>Target</strong></td>
+        <td class="col"><strong class="d-flex" style="width: 70px;">Age Range</strong></td>
+        <td class="col"><strong>Geographic Target</strong></td>
+        <td class="col"><strong>Primary Ad Format</strong></td>
+        <td class="col"><strong>ESTD CPM</strong></td>
+        <td class="col"><strong>ESTD Impr</strong></td>
+        <td class="col"><strong>Total Budget</strong></td>
+      </tr>
+    </thead>
+    <tbody>
+      <% media_plan.media_plan_output.media_plan_output_rows.each_with_index do |row, row_index| %>
+        <tr>
+          <td>
+            <!--Sending Required id field-->
+            <%= hidden_field_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][id]", row.id %>
+            <%= media_plan.client.name %>
+          </td>
+          <td><%= media_brief.title %></td>
+          <td><%= media_brief.campaign_starts_on.strftime('%m/%d/%Y') %> - <%= media_brief.campaign_ends_on.strftime('%m/%d/%Y') %></td>
+          <td><%= row.campaign_channel.label %></td>
+          <td><%= row.media_platform.label %></td>
+          <td><%= media_output.campaign_objective.label %></td>
+          <td><%= media_brief.campaign_initiative.label %></td>
+          <td><%= row.target_strategy.label %></td>
+          <td><%= row.target.label %></td>
+          <td>
+            <div class="d-flex flex-column">
+              <% if media_brief.all_demographics %>
+                <span>ALL</span>
+              <% else %>
+                <% media_brief.demographic_ages_list.each do |age| %>
+                  <div><%= age %></div>
+                <% end %>
+              <% end %>
+            </div>
+          </td>
+          <td><%= GeographicTarget.find(media_brief.geographic_target).short_label %></td>
+          <td><%= row.ad_format.label %></td>
+          <td><%= format_cpm(row.master_relationship.cpm, row.target_strategy) %></td>
+          <td><%= format_impr(row.impressions, row.target_strategy) %></td>
+
+          <% unless is_retargeting(row.target_strategy) %>
+            <%= render "shared/editable_cell", text_content: number_to_currency(row.amt, precision: 2) do |data| %>
+              <%= text_field_tag "media_plan_output[media_plan_output_rows_attributes][#{row_index}][amt]", number_with_precision(row.amt, precision: 2), class: "form-control text-center", form: form_id, data: data.merge(
+                action: "blur->editable-cell#hideField keyup->currency-mask#onChange", controller: "currency-mask", "currency-mask-precision": 2
+              ) %>
+            <% end %>
+          <% else %>
+            <td><%= currency(row.amt) %></td>
+          <% end %>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="13" class="text-center"><strong>Total</strong></td>
+        <td><strong><%= sum_imprs(media_plan) %></strong></td>
+        <td><strong><%= sum_media_plan_amts(media_plan) %></strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<%= render 'extra_info' %>
+
+<div class="d-flex justify-content-end mt-5">
+  <% if media_plan.created? %>
+    <% if policy(media_plan).submit? %>
+      <%= submit_tag "Save & Submit", class: "btn btn-primary", form: form_id, data: {
+        action: "click->media-plan-update-state#submit",
+        action_value: 'submit'
+      } %>
+    <% end %>
+  <% elsif media_plan.approved? && media_plan.user_in_review? %>
+    <% if policy(media_plan).reject? %>
+      <%= render 'reject_modal' %>
+      <button type="button" class="btn btn-danger me-3" data-bs-toggle="modal" data-bs-target="#rejectModal">
+        Reject
+      </button>
+    <% end %>
+
+    <% if policy(media_plan).approve? %>
+      <%= render 'approve_modal' %>
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approveModal">
+        Approve
+      </button>
+    <% end %>
+  <% end %>
+</div>
+

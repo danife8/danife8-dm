@@ -1,0 +1,17 @@
+.sidebar-icon {
+  path {
+    transition: fill 0.15s ease-in-out;
+  }
+
+  &:hover path {
+    fill: $yellow-green;
+  }
+}
+
+.is-sidebar-link-active {
+  color: $yellow-green;
+}
+
+.is-sidebar-icon-active path {
+  fill: $yellow-green;
+}

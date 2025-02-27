@@ -1,0 +1,9 @@
+<div class="row text-center">
+  <div class="col p-0" data-alert-target="container">
+  <% flash.each do |_type, msg| %>
+    <div class="alert alert-info mb-0" role="alert">
+      <%= msg %>
+    </div>
+  <% end %>
+  </div>
+</div>
